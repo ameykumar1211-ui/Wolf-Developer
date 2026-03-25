@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wolf Developer - Web & App Agency</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wolf: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                            accent: '#3b82f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide scrollbar for the outer body if needed */
+        body { margin: 0; overflow: hidden; background-color: #020617; }
+        
+        /* Custom scrollbar for the internal app container */
+        .app-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .app-scroll::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        .app-scroll::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-slate-300 font-sans antialiased min-h-screen flex items-center justify-center">
+
+    <!-- 9:16 Mobile Phone Container -->
+    <div class="relative w-full h-[100dvh] sm:h-[85vh] sm:max-h-[850px] sm:aspect-[9/16] bg-wolf-900 sm:rounded-[2.5rem] sm:border-8 sm:border-gray-800 shadow-2xl overflow-hidden flex flex-col">
+        
+        <!-- Scrollable App Content -->
+        <div class="app-scroll overflow-y-auto overflow-x-hidden flex-grow flex flex-col w-full relative">
+
+            <!-- Navigation -->
+            <nav class="bg-wolf-800/90 backdrop-blur-sm border-b border-wolf-700 sticky top-0 z-50">
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <!-- Logo -->
+                    <div class="flex items-center cursor-pointer" onclick="showView('home-view')">
+                        <img src="1000769200.png" alt="Wolf Developer Logo" class="h-8 w-8 object-contain mr-2 rounded-full border border-wolf-700 shadow-sm" onerror="this.style.display='none'">
+                        <span class="text-white font-bold text-sm tracking-widest">WOLF</span>
+                    </div>
+                    <!-- Admin Button -->
+                    <button onclick="showView('admin-login-view')" class="text-gray-400 hover:text-white p-2 rounded-full bg-wolf-900 border border-wolf-700 transition-colors shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- ============================== -->
+            <!-- MAIN HOME VIEW -->
+            <!-- ============================== -->
+            <main id="home-view" class="flex-grow flex flex-col fade-in">
+                
+                <!-- Hero Section -->
+                <section class="relative px-5 py-12 text-center border-b border-wolf-800">
+                    <h1 class="text-3xl font-extrabold text-white tracking-tight mb-3">
+                        Hunt Down <br><span class="text-blue-500">Digital Success</span>
+                    </h1>
+                    <p class="text-sm text-gray-400 mb-8 leading-relaxed">
+                        We build high-performance websites and apps. Join the pack and dominate.
+                    </p>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="scrollToSection('contact-section')" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg">
+                            Start a Project
+                        </button>
+                        <button onclick="scrollToSection('why-us-section')" class="w-full bg-wolf-800 text-white font-bold py-3 rounded-xl border border-wolf-700">
+                            Why Choose Us
+                        </button>
+                    </div>
+                    <!-- Ambient Glow -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20 pointer-events-none">
+                        <div class="absolute top-0 left-0 w-32 h-32 bg-blue-600 rounded-full blur-[60px]"></div>
+                        <div class="absolute bottom-0 right-0 w-32 h-32 bg-purple-600 rounded-full blur-[60px]"></div>
+                    </div>
+                </section>
+
+                <!-- Articles Section -->
+                <section id="why-us-section" class="py-12 px-5 bg-wolf-800 border-b border-wolf-700 space-y-12">
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold text-white mb-2">Why Wolf Developers Are The Best</h2>
+                        <p class="text-xs text-gray-400">Clean, optimized code. Infinite scaling.</p>
+                    </div>
+
+                    <!-- Article 1 -->
+                    <div class="space-y-4">
+                        <div class="inline-block bg-blue-900/50 border border-blue-500/30 text-blue-400 px-2 py-1 rounded text-xs font-semibold">Web Dev</div>
+                        <h3 class="text-xl font-bold text-white">The Best Websites</h3>
+                        <p class="text-sm text-gray-400">
+                            We write raw, clean code to ensure your users never have to wait for a page to load. Search engine optimized right out of the box.
+                        </p>
+                        <!-- Code Image -->
+                        <div class="bg-[#0d1117] rounded-lg overflow-hidden border border-gray-700 shadow-xl">
+                            <div class="bg-[#161b22] px-3 py-2 flex items-center gap-1.5 border-b border-gray-700">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                <span class="ml-2 text-[10px] text-gray-400 font-mono">web.js</span>
+                            </div>
+                            <div class="p-4 font-mono text-xs overflow-x-auto whitespace-pre">
+<span class="text-pink-500">const</span> app = <span class="text-pink-500">new</span> <span class="text-yellow-200">WolfApp</span>({
+  speed: <span class="text-blue-300">MAX</span>,
+  seo: <span class="text-orange-400">true</span>
+});
+app.<span class="text-yellow-200">launch</span>();</div>
+                        </div>
+                    </div>
+
+                    <!-- Article 2 -->
+                    <div class="space-y-4">
+                        <div class="inline-block bg-purple-900/50 border border-purple-500/30 text-purple-400 px-2 py-1 rounded text-xs font-semibold">App Dev</div>
+                        <h3 class="text-xl font-bold text-white">Flawless Apps</h3>
+                        <p class="text-sm text-gray-400">
+                            Seamless user experience across iOS and Android. Our state management ensures your app never crashes.
+                        </p>
+                        <!-- Code Image -->
+                        <div class="bg-[#0d1117] rounded-lg overflow-hidden border border-gray-700 shadow-xl">
+                            <div class="bg-[#161b22] px-3 py-2 flex items-center gap-1.5 border-b border-gray-700">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                <span class="ml-2 text-[10px] text-gray-400 font-mono">Mobile.tsx</span>
+                            </div>
+                            <div class="p-4 font-mono text-xs overflow-x-auto whitespace-pre">
+<span class="text-gray-300">&lt;<span class="text-blue-400">AppContainer</span>&gt;</span>
+  <span class="text-gray-300">&lt;<span class="text-blue-400">Database</span> <span class="text-cyan-300">sync</span>=<span class="text-green-300">"fast"</span> /&gt;</span>
+<span class="text-gray-300">&lt;/<span class="text-blue-400">AppContainer</span>&gt;</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact Form Section -->
+                <section id="contact-section" class="py-12 px-5 bg-wolf-900">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-white">Start Project</h2>
+                        <p class="text-xs text-gray-400 mt-1">Submit details to get started.</p>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="success-message" class="hidden fade-in bg-green-900/40 border border-green-500/50 text-green-300 p-4 rounded-xl mb-6 text-center text-sm">
+                        <div class="font-bold mb-1">Success!</div>
+                        Wolf developer will contact you in a few hours.
+                    </div>
+
+                    <!-- Form Error Message -->
+                    <div id="form-error" class="hidden fade-in bg-red-900/40 border border-red-500/50 text-red-300 p-4 rounded-xl mb-6 text-center text-sm">
+                        <div class="font-bold mb-1">Error</div>
+                        Failed to submit. Please check your Firebase rules.
+                    </div>
+
+                    <form id="client-form" onsubmit="handleClientSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Project Name *</label>
+                            <input type="text" id="projectName" required class="w-full bg-wolf-800 border border-wolf-600 rounded-lg px-3 py-2.5 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none" placeholder="e.g. Shopping App">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Phone Number *</label>
+                            <input type="tel" id="phone" required class="w-full bg-wolf-800 border border-wolf-600 rounded-lg px-3 py-2.5 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none" placeholder="+91 98765 43210">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">WhatsApp Number</label>
+                            <input type="tel" id="whatsapp" class="w-full bg-wolf-800 border border-wolf-600 rounded-lg px-3 py-2.5 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none" placeholder="+91 98765 43210">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Estimated Budget *</label>
+                            <select id="budget" required class="w-full bg-wolf-800 border border-wolf-600 rounded-lg px-3 py-2.5 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none">
+                                <option value="" disabled selected>Select budget range</option>
+                                <option value="₹7,000 - ₹10,000">₹7,000 - ₹10,000</option>
+                                <option value="₹10,000 - ₹20,000">₹10,000 - ₹20,000</option>
+                                <option value="₹20,000 - ₹30,000">₹20,000 - ₹30,000</option>
+                                <option value="₹30,000+">₹30,000+</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Requirements *</label>
+                            <textarea id="requirements" rows="3" required class="w-full bg-wolf-800 border border-wolf-600 rounded-lg px-3 py-2 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none" placeholder="App features..."></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-lg mt-2 text-sm active:scale-95 transition-all">
+                            Submit Details
+                        </button>
+                    </form>
+                </section>
+
+                <footer class="bg-black py-6 text-center mt-auto border-t border-wolf-800">
+                    <p class="text-gray-600 text-xs">&copy; 2024 Wolf Developer</p>
+                </footer>
+            </main>
+
+
+            <!-- ============================== -->
+            <!-- ADMIN LOGIN VIEW -->
+            <!-- ============================== -->
+            <main id="admin-login-view" class="hidden flex-grow flex items-center justify-center p-5 fade-in">
+                <div class="w-full bg-wolf-800 rounded-2xl border border-wolf-700 p-6 shadow-xl text-center">
+                    <div class="mb-6">
+                        <img src="1000769200.png" alt="Wolf Developer Logo" class="w-20 h-20 rounded-full mb-4 border-2 border-wolf-600 shadow-lg object-contain mx-auto" onerror="this.style.display='none'">
+                        <h2 class="text-xl font-bold text-white">Admin Access</h2>
+                        <p class="text-xs text-gray-400 mt-1">Authorized personnel only</p>
+                    </div>
+
+                    <div id="login-error" class="hidden bg-red-900/50 border border-red-500 text-red-200 p-2 rounded mb-4 text-xs text-center">
+                        Incorrect password.
+                    </div>
+
+                    <form onsubmit="handleAdminLogin(event)" class="space-y-4 text-left">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Password</label>
+                            <input type="password" id="admin-password" required class="w-full bg-wolf-900 border border-wolf-600 rounded-lg px-3 py-2.5 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none">
+                            <p class="text-[10px] text-gray-500 mt-1">Hint: Try 'Iamadmin'</p>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl text-sm shadow-md">
+                            Login
+                        </button>
+                        <button type="button" onclick="showView('home-view')" class="w-full bg-transparent border border-wolf-600 text-gray-300 font-medium py-3 rounded-xl text-sm">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </main>
+
+
+            <!-- ============================== -->
+            <!-- ADMIN DASHBOARD VIEW -->
+            <!-- ============================== -->
+            <main id="admin-panel-view" class="hidden flex-grow flex flex-col p-4 fade-in">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-wolf-800">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Dashboard</h1>
+                        <p class="text-xs text-gray-400">Client Requests</p>
+                    </div>
+                    <button onclick="logoutAdmin()" class="bg-red-600/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-medium border border-red-900/50 hover:bg-red-600/40 transition-colors">
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading-state" class="py-10 text-center flex flex-col items-center hidden">
+                    <svg class="w-8 h-8 text-blue-500 animate-spin mb-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <p class="text-gray-400 text-sm">Loading requests from Firebase...</p>
+                </div>
+
+                <!-- Submissions List (Mobile Card Layout) -->
+                <div id="submissions-list" class="space-y-4 pb-10">
+                    <!-- Dynamic cards injected here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden py-10 text-center flex flex-col items-center">
+                    <svg class="w-10 h-10 text-wolf-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    <p class="text-gray-400 text-sm">No project requests yet.</p>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- FIREBASE AND APPLICATION LOGIC -->
+    <!-- We use type="module" to securely import Firebase -->
+    <script type="module">
+        // 1. Import Firebase Functions via CDN (Browser compatible)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // ==========================================
+        // 2. YOUR EXACT FIREBASE CONFIG
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWKoUO9dx7j74fw3TFjZJSVZJqfXR_fYk",
+            authDomain: "wolf-d3f5c.firebaseapp.com",
+            databaseURL: "https://wolf-d3f5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "wolf-d3f5c",
+            storageBucket: "wolf-d3f5c.firebasestorage.app",
+            messagingSenderId: "653425773679",
+            appId: "1:653425773679:web:a3d211685992a1c857119a",
+            measurementId: "G-HT8KNK43RC"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global Variables
+        let unsubscribeSubmissions = null; // Used to stop fetching data when logging out
+
+        // Expose functions to the `window` so HTML buttons can click them
+        
+        window.showView = (viewId) => {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('admin-login-view').classList.add('hidden');
+            document.getElementById('admin-panel-view').classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+
+            document.getElementById(viewId).classList.remove('hidden');
+            document.querySelector('.app-scroll').scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.scrollToSection = (id) => {
+            const el = document.getElementById(id);
+            const container = document.querySelector('.app-scroll');
+            if (el && container) {
+                const topPos = el.offsetTop - 50;
+                container.scrollTo({ top: topPos, behavior: 'smooth' });
+            }
+        };
+
+        // --- CLIENT: SUBMIT FORM TO FIREBASE ---
+        window.handleClientSubmit = async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = "Sending...";
+            btn.disabled = true;
+
+            const d = new Date();
+            const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+            const newSubmission = {
+                timestamp: Date.now(), // Helps with sorting latest first
+                date: dateStr,
+                name: document.getElementById('projectName').value,
+                phone: document.getElementById('phone').value,
+                whatsapp: document.getElementById('whatsapp').value || 'N/A',
+                budget: document.getElementById('budget').value,
+                reqs: document.getElementById('requirements').value
+            };
+
+            try {
+                // ADD DOCUMENT TO FIRESTORE COLLECTION "clientRequests"
+                await addDoc(collection(db, "clientRequests"), newSubmission);
+                
+                const form = document.getElementById('client-form');
+                const successMsg = document.getElementById('success-message');
+                const errorMsg = document.getElementById('form-error');
+                
+                form.reset();
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+
+                const container = document.querySelector('.app-scroll');
+                container.scrollBy({ top: -100, behavior: 'smooth' });
+
+                setTimeout(() => { successMsg.classList.add('hidden'); }, 6000);
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                document.getElementById('form-error').classList.remove('hidden');
+            } finally {
+                btn.innerHTML = "Submit Details";
+                btn.disabled = false;
+            }
+        };
+
+        // --- ADMIN: LOGIN AND FETCH DATA FROM FIREBASE ---
+        window.handleAdminLogin = (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+
+            if (password === 'Iamadmin') {
+                window.showView('admin-panel-view');
+                fetchAdminData();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        };
+
+        window.logoutAdmin = () => {
+            if (unsubscribeSubmissions) {
+                unsubscribeSubmissions(); // Stop listening to Firebase when logged out
+            }
+            window.showView('home-view');
+        };
+
+        // Listen for real-time updates from Firebase
+        function fetchAdminData() {
+            document.getElementById('loading-state').classList.remove('hidden');
+            document.getElementById('submissions-list').classList.add('hidden');
+            document.getElementById('empty-state').classList.add('hidden');
+
+            const q = query(collection(db, "clientRequests"));
+            
+            unsubscribeSubmissions = onSnapshot(q, (snapshot) => {
+                const subs = [];
+                snapshot.forEach((doc) => {
+                    subs.push({ firebaseId: doc.id, ...doc.data() });
+                });
+                renderAdminPanel(subs);
+            }, (error) => {
+                console.error("Firebase fetch error:", error);
+                document.getElementById('loading-state').innerHTML = `<p class="text-red-400">Error loading data. Have you enabled Firestore Database and updated the rules?</p>`;
+            });
+        }
+
+        // --- ADMIN: DELETE DATA FROM FIREBASE ---
+        window.deleteSubmission = async (firebaseId) => {
+            if(confirm("Are you sure you want to clear this request?")) {
+                try {
+                    await deleteDoc(doc(db, "clientRequests", firebaseId));
+                    // Firebase onSnapshot will automatically re-render the list!
+                } catch (error) {
+                    console.error("Error deleting document: ", error);
+                }
+            }
+        };
+
+        // Render Cards inside the Admin Panel
+        function renderAdminPanel(submissionsData) {
+            document.getElementById('loading-state').classList.add('hidden');
+            const list = document.getElementById('submissions-list');
+            const emptyState = document.getElementById('empty-state');
+            
+            list.innerHTML = '';
+
+            if (submissionsData.length === 0) {
+                list.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            list.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            // Sort newest first based on timestamp
+            const sorted = [...submissionsData].sort((a, b) => b.timestamp - a.timestamp);
+
+            sorted.forEach(sub => {
+                const card = document.createElement('div');
+                card.className = 'bg-wolf-800 p-4 rounded-xl border border-wolf-700 shadow-sm fade-in';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-white text-base truncate pr-2">${sub.name}</h3>
+                        <span class="text-[10px] text-gray-500 bg-wolf-900 px-2 py-1 rounded">${sub.date}</span>
+                    </div>
+                    
+                    <div class="space-y-1.5 mb-3 bg-wolf-900/50 p-2.5 rounded-lg border border-wolf-800">
+                        <p class="text-xs text-gray-300 flex items-center">
+                            <span class="w-4 text-center mr-1">📞</span> ${sub.phone}
+                        </p>
+                        <p class="text-xs text-green-400 flex items-center">
+                            <span class="w-4 text-center mr-1">💬</span> ${sub.whatsapp}
+                        </p>
+                        <p class="text-xs text-blue-400 font-medium flex items-center pt-1 border-t border-wolf-800 mt-1">
+                            <span class="w-4 text-center mr-1">💰</span> ${sub.budget}
+                        </p>
+                    </div>
+                    
+                    <div class="bg-wolf-900 p-3 rounded-lg text-xs text-gray-400 mb-3 max-h-24 overflow-y-auto custom-scrollbar">
+                        ${sub.reqs}
+                    </div>
+                    
+                    <button onclick="deleteSubmission('${sub.firebaseId}')" class="w-full text-red-400 bg-red-900/20 hover:bg-red-900/40 border border-red-900/50 py-2 rounded-lg text-xs font-bold transition-colors">
+                        Clear Request
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
