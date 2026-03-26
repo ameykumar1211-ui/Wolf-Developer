@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wolf Developer | Luxury Web & App Agency</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        app: {
+                            bg: '#030305',
+                            card: '#0a0a0f',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            glow: '#3b82f6'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000000; }
+        
+        /* Ultra-minimal scrollbar */
+        .app-scroll::-webkit-scrollbar { width: 0px; background: transparent; }
+        .app-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(10, 10, 15, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth View Transitions */
+        .view-section { display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .view-section.active { display: flex; opacity: 1; }
+
+        /* Premium Input Fields */
+        .premium-input {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Luxury Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-zinc-300 flex items-center justify-center">
+
+    <!-- Premium Device Container -->
+    <div class="relative w-full h-[100dvh] sm:h-[85vh] sm:max-h-[850px] sm:aspect-[9/16] bg-app-bg sm:rounded-[3rem] sm:border-[6px] sm:border-[#111] shadow-[0_0_80px_rgba(59,130,246,0.15)] overflow-hidden flex flex-col">
+        
+        <!-- Ambient Background Orbs -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[30%] bg-blue-600/20 rounded-full blur-[80px] animate-blob"></div>
+            <div class="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[80px] animate-blob" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-[10%] left-[20%] w-[50%] h-[30%] bg-indigo-600/20 rounded-full blur-[80px] animate-blob" style="animation-delay: 4s;"></div>
+        </div>
+
+        <!-- Scrollable Area -->
+        <div class="app-scroll overflow-y-auto overflow-x-hidden flex-grow flex flex-col w-full relative z-10" id="scroll-container">
+
+            <!-- Luxury Navigation -->
+            <nav class="glass sticky top-0 z-50 border-b border-app-border">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center cursor-pointer group" onclick="showView('home-view')">
+                        <div class="relative w-9 h-9 mr-3 rounded-full overflow-hidden border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:border-blue-500/50 transition-all duration-500">
+                            <img src="1000769200.png" alt="Wolf Logo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.style.display='none'">
+                        </div>
+                        <span class="text-white font-black text-sm tracking-[0.2em] uppercase">Wolf</span>
+                    </div>
+                    <button onclick="showView('admin-login-view')" class="text-zinc-500 hover:text-white p-2 rounded-full hover:bg-white/5 transition-all duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- ============================== -->
+            <!-- MAIN HOME VIEW -->
+            <!-- ============================== -->
+            <main id="home-view" class="view-section active flex-col">
+                
+                <!-- Hero Section -->
+                <section class="relative px-6 pt-20 pb-16 text-center">
+                    <div class="animate-fade-in-up">
+                        <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.15em] uppercase mb-6 backdrop-blur-md">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            Premium Agency
+                        </div>
+                        <h1 class="text-5xl font-black tracking-tight mb-5 leading-[1.1]">
+                            <span class="text-gradient">Engineer Your</span><br>
+                            <span class="text-gradient-accent">Digital Empire</span>
+                        </h1>
+                        <p class="text-sm text-zinc-400 mb-10 leading-relaxed max-w-xs mx-auto font-light">
+                            We forge bespoke, high-performance web and mobile experiences designed for absolute market dominance.
+                        </p>
+                        <div class="flex flex-col gap-4">
+                            <button onclick="scrollToSection('contact-section')" class="relative group overflow-hidden w-full bg-white text-black font-bold py-4 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:scale-[0.98] transition-all duration-300">
+                                <span class="relative z-10">Initiate Project</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </button>
+                            <button onclick="scrollToSection('services-section')" class="w-full bg-transparent text-white font-bold py-4 rounded-2xl border border-white/10 hover:bg-white/5 transition-all duration-300">
+                                Explore Architecture
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Services Section -->
+                <section id="services-section" class="py-16 px-6 relative">
+                    <div class="reveal mb-10">
+                        <h2 class="text-3xl font-black text-white mb-2">Capabilities</h2>
+                        <p class="text-xs text-zinc-400 font-light tracking-wide uppercase">Elite Digital Solutions</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Service 1 -->
+                        <div class="reveal glass-card p-5 rounded-3xl group hover:border-blue-500/30 transition-all duration-500 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="flex items-center gap-4 relative z-10">
+                                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-500">
+                                    <svg class="w-5 h-5 text-zinc-300 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-base mb-1">Immersive Websites</h3>
+                                    <p class="text-xs text-zinc-500 font-light leading-relaxed">Blazing fast architectures optimized for conversion and SEO.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service 2 -->
+                        <div class="reveal glass-card p-5 rounded-3xl group hover:border-purple-500/30 transition-all duration-500 relative overflow-hidden" style="transition-delay: 100ms;">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="flex items-center gap-4 relative z-10">
+                                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all duration-500">
+                                    <svg class="w-5 h-5 text-zinc-300 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-base mb-1">Native Applications</h3>
+                                    <p class="text-xs text-zinc-500 font-light leading-relaxed">Fluid, state-of-the-art iOS and Android mobile experiences.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service 3 -->
+                        <div class="reveal glass-card p-5 rounded-3xl group hover:border-green-500/30 transition-all duration-500 relative overflow-hidden" style="transition-delay: 200ms;">
+                            <div class="absolute inset-0 bg-gradient-to-br from-green-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="flex items-center gap-4 relative z-10">
+                                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-green-500/20 transition-all duration-500">
+                                    <svg class="w-5 h-5 text-zinc-300 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-base mb-1">E-Commerce Ecosystems</h3>
+                                    <p class="text-xs text-zinc-500 font-light leading-relaxed">High-converting, secure digital storefronts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Premium Showcase Section -->
+                <section class="py-16 px-6 relative border-y border-white/5">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-app-bg to-app-bg z-0"></div>
+                    
+                    <div class="reveal relative z-10 mb-8">
+                        <h2 class="text-3xl font-black text-white mb-2">Interfaces</h2>
+                        <p class="text-xs text-blue-400 font-medium tracking-wide uppercase">Award-Winning UI Design</p>
+                    </div>
+                    
+                    <div class="reveal relative z-10 rounded-3xl overflow-hidden glass-card p-2 group">
+                        <div class="rounded-2xl overflow-hidden relative border border-white/5">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 z-10 pointer-events-none transition-opacity group-hover:opacity-40"></div>
+                            
+                            <img src="1000769445.png" alt="Dashboard UI" class="w-full h-auto object-cover transform scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out" onerror="this.style.display='none'">
+                            
+                            <div class="absolute bottom-5 left-5 z-20 transform translate-y-0 group-hover:-translate-y-2 transition-transform duration-500">
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest inline-block mb-2">Live Demo</div>
+                                <h3 class="text-white font-bold text-lg drop-shadow-md">Custom Dashboards</h3>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Why Us / Process Section -->
+                <section class="py-16 px-6">
+                    <div class="reveal mb-10">
+                        <h2 class="text-3xl font-black text-white mb-2">The Wolf Standard</h2>
+                        <p class="text-xs text-zinc-400 font-light uppercase tracking-widest">Why we lead the pack</p>
+                    </div>
+
+                    <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+                        <!-- Point 1 -->
+                        <div class="reveal relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-app-bg shadow-[0_0_15px_rgba(59,130,246,0.2)] group-hover:border-blue-500/50 transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 relative">
+                                <div class="w-2.5 h-2.5 bg-blue-500 rounded-full group-hover:shadow-[0_0_10px_#3b82f6] transition-all"></div>
+                            </div>
+                            <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl ml-4 md:ml-0">
+                                <h3 class="font-bold text-white text-base mb-1">Handcrafted Code</h3>
+                                <p class="text-xs text-zinc-500 font-light leading-relaxed">No bloated page builders. Just pure, native performance crafted line by line.</p>
+                            </div>
+                        </div>
+                        <!-- Point 2 -->
+                        <div class="reveal relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active" style="transition-delay: 150ms;">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-app-bg shadow-[0_0_15px_rgba(168,85,247,0.2)] group-hover:border-purple-500/50 transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 relative">
+                                <div class="w-2.5 h-2.5 bg-purple-500 rounded-full group-hover:shadow-[0_0_10px_#a855f7] transition-all"></div>
+                            </div>
+                            <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl ml-4 md:ml-0">
+                                <h3 class="font-bold text-white text-base mb-1">Psychological UX</h3>
+                                <p class="text-xs text-zinc-500 font-light leading-relaxed">Interfaces engineered based on human behavior to maximize your conversion rates.</p>
+                            </div>
+                        </div>
+                        <!-- Point 3 -->
+                        <div class="reveal relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active" style="transition-delay: 300ms;">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-app-bg shadow-[0_0_15px_rgba(34,197,94,0.2)] group-hover:border-green-500/50 transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 relative">
+                                <div class="w-2.5 h-2.5 bg-green-500 rounded-full group-hover:shadow-[0_0_10px_#22c55e] transition-all"></div>
+                            </div>
+                            <div class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl ml-4 md:ml-0">
+                                <h3 class="font-bold text-white text-base mb-1">Military Grade</h3>
+                                <p class="text-xs text-zinc-500 font-light leading-relaxed">Enterprise-level security protocols ensuring your data remains absolutely impenetrable.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact Form Section -->
+                <section id="contact-section" class="py-16 px-6 relative z-10">
+                    <div class="reveal text-center mb-10">
+                        <h2 class="text-4xl font-black text-white mb-2">Initiate.</h2>
+                        <p class="text-xs text-blue-400 uppercase tracking-widest font-bold">Secure Your Consultation</p>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="success-message" class="hidden glass-card border-green-500/30 p-6 rounded-3xl mb-8 text-center backdrop-blur-xl">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="font-black text-white text-lg mb-1">Transmission Successful</div>
+                        <p class="text-xs text-zinc-400">The Wolf pack will contact you shortly.</p>
+                    </div>
+
+                    <!-- Form Error Message -->
+                    <div id="form-error" class="hidden glass-card border-red-500/30 p-6 rounded-3xl mb-8 text-center backdrop-blur-xl">
+                        <div class="font-black text-white text-lg mb-1">Link Failed</div>
+                        <p class="text-xs text-red-400">Database offline. Check network parameters.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="reveal glass-card p-7 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                        <form id="client-form" onsubmit="handleClientSubmit(event)" class="space-y-5">
+                            <div>
+                                <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">Project Code Name *</label>
+                                <input type="text" id="projectName" required class="w-full premium-input rounded-2xl px-5 py-3.5 text-sm text-white outline-none placeholder-zinc-600" placeholder="e.g. Project Apollo">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">Comms (Phone) *</label>
+                                    <input type="tel" id="phone" required class="w-full premium-input rounded-2xl px-5 py-3.5 text-sm text-white outline-none placeholder-zinc-600" placeholder="+91 000 000">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">WhatsApp</label>
+                                    <input type="tel" id="whatsapp" class="w-full premium-input rounded-2xl px-5 py-3.5 text-sm text-white outline-none placeholder-zinc-600" placeholder="Optional">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">Capital Allocation *</label>
+                                <div class="relative">
+                                    <select id="budget" required class="w-full premium-input rounded-2xl px-5 py-3.5 text-sm text-white outline-none appearance-none cursor-pointer">
+                                        <option value="" disabled selected class="bg-app-bg text-zinc-500">Select parameter...</option>
+                                        <option value="Simple: ₹1,500 - ₹2,500" class="bg-app-bg text-white">Simple: ₹1,500 - ₹2,500</option>
+                                        <option value="Modern: ₹3,000 - ₹5,000" class="bg-app-bg text-white">Modern: ₹3,000 - ₹5,000</option>
+                                        <option value="Best UI: ₹6,000 - ₹10,000" class="bg-app-bg text-white">Best UI: ₹6,000 - ₹10,000</option>
+                                        <option value="Premium: ₹11,000 - ₹20,000" class="bg-app-bg text-white">Premium: ₹11,000 - ₹20,000</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">Architecture Details *</label>
+                                <textarea id="requirements" rows="3" required class="w-full premium-input rounded-2xl px-5 py-4 text-sm text-white outline-none placeholder-zinc-600 resize-none" placeholder="Outline your vision..."></textarea>
+                            </div>
+
+                            <button type="submit" id="submit-btn" class="relative group overflow-hidden w-full bg-blue-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-2xl shadow-[0_0_20px_rgba(59,130,246,0.3)] mt-2 text-xs hover:scale-[0.98] transition-all duration-300">
+                                <span class="relative z-10">Conform</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <footer class="py-10 px-6 text-center mt-auto border-t border-white/5 relative z-10 bg-black/50 backdrop-blur-lg">
+                    <img src="1000769200.png" alt="Wolf Logo" class="w-10 h-10 mx-auto rounded-full mb-4 opacity-30 grayscale filter" onerror="this.style.display='none'">
+                    <p class="text-zinc-600 text-[10px] font-bold tracking-[0.2em] uppercase mb-1">&copy; 2026 Wolf Developer</p>
+                    <p class="text-zinc-700 text-[9px] uppercase tracking-widest">Architects of the digital realm.</p>
+                </footer>
+            </main>
+
+
+            <!-- ============================== -->
+            <!-- ADMIN LOGIN VIEW -->
+            <!-- ============================== -->
+            <main id="admin-login-view" class="view-section flex-grow items-center justify-center p-6 relative">
+                <div class="w-full max-w-sm glass-card rounded-[2.5rem] p-8 text-center relative z-10 animate-fade-in-up">
+                    <div class="mb-10">
+                        <div class="relative inline-block">
+                            <div class="absolute inset-0 bg-blue-500/20 blur-xl rounded-full"></div>
+                            <img src="1000769200.png" alt="Wolf Logo" class="relative w-20 h-20 rounded-full border border-white/10 shadow-2xl object-cover mx-auto bg-black p-0.5" onerror="this.style.display='none'">
+                        </div>
+                        <h2 class="text-2xl font-black text-white mt-5 tracking-tight">Mainframe</h2>
+                        <p class="text-[10px] text-zinc-500 mt-1 uppercase tracking-[0.3em] font-bold">Authorized Access Only</p>
+                    </div>
+
+                    <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-2xl mb-6 text-xs font-bold backdrop-blur-md">
+                        Access Denied.
+                    </div>
+
+                    <form onsubmit="handleAdminLogin(event)" class="space-y-5 text-left">
+                        <div>
+                            <input type="password" id="admin-password" required class="w-full premium-input rounded-2xl px-5 py-4 text-center text-sm text-white outline-none tracking-[0.5em] placeholder-zinc-700 placeholder:tracking-normal" placeholder="Enter Clearance Code">
+                        </div>
+                        <button type="submit" class="w-full bg-white text-black font-black uppercase tracking-[0.2em] py-4 rounded-2xl text-xs hover:scale-[0.98] transition-transform shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                            Unlock
+                        </button>
+                        <button type="button" onclick="showView('home-view')" class="w-full text-zinc-500 font-bold py-2 rounded-xl text-[10px] uppercase tracking-widest hover:text-white transition-colors">
+                            Abort
+                        </button>
+                    </form>
+                </div>
+            </main>
+
+
+            <!-- ============================== -->
+            <!-- ADMIN DASHBOARD VIEW -->
+            <!-- ============================== -->
+            <main id="admin-panel-view" class="view-section flex-grow flex-col p-6">
+                <div class="flex justify-between items-end mb-8 pb-5 border-b border-white/5 animate-fade-in-up">
+                    <div>
+                        <h1 class="text-2xl font-black text-white tracking-tight">Nexus</h1>
+                        <p class="text-[10px] text-blue-400 uppercase tracking-[0.2em] font-bold mt-1">Live Telemetry</p>
+                    </div>
+                    <button onclick="logoutAdmin()" class="bg-white/5 text-zinc-400 px-4 py-2.5 rounded-xl text-[10px] uppercase tracking-widest font-bold border border-white/10 hover:bg-white/10 hover:text-white active:scale-95 transition-all">
+                        Lock
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading-state" class="py-20 text-center flex flex-col items-center hidden">
+                    <div class="w-10 h-10 border-2 border-white/10 border-t-blue-500 rounded-full animate-spin mb-5"></div>
+                    <p class="text-zinc-400 text-[10px] font-bold tracking-[0.3em] uppercase animate-pulse">Establishing Uplink...</p>
+                </div>
+
+                <!-- Submissions List -->
+                <div id="submissions-list" class="space-y-5 pb-10">
+                    <!-- Dynamic cards injected here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden py-20 text-center flex flex-col items-center animate-fade-in-up">
+                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-5 border border-white/10 backdrop-blur-md">
+                        <svg class="w-6 h-6 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    </div>
+                    <p class="text-zinc-300 text-sm font-bold tracking-wide">Signal Empty</p>
+                    <p class="text-[10px] text-zinc-600 mt-1 uppercase tracking-widest">Awaiting client initiation.</p>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- UI Interaction Scripts -->
+    <script>
+        // Scroll Reveal Animation Logic
+        const observerOptions = {
+            root: document.getElementById('scroll-container'),
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        function initAnimations() {
+            document.querySelectorAll('.reveal').forEach((el) => {
+                el.classList.remove('active');
+                observer.observe(el);
+            });
+        }
+        
+        // Init on load
+        document.addEventListener('DOMContentLoaded', initAnimations);
+
+        // View Router
+        window.showView = (viewId) => {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+
+            const activeView = document.getElementById(viewId);
+            activeView.classList.add('active');
+            
+            // Re-trigger scroll animations for the home view
+            if(viewId === 'home-view') {
+                setTimeout(initAnimations, 50);
+            }
+            
+            document.getElementById('scroll-container').scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.scrollToSection = (id) => {
+            const el = document.getElementById(id);
+            const container = document.getElementById('scroll-container');
+            if (el && container) {
+                const topPos = el.offsetTop - 70;
+                container.scrollTo({ top: topPos, behavior: 'smooth' });
+            }
+        };
+    </script>
+
+    <!-- FIREBASE DATA LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // YOUR EXACT FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWKoUO9dx7j74fw3TFjZJSVZJqfXR_fYk",
+            authDomain: "wolf-d3f5c.firebaseapp.com",
+            databaseURL: "https://wolf-d3f5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "wolf-d3f5c",
+            storageBucket: "wolf-d3f5c.firebasestorage.app",
+            messagingSenderId: "653425773679",
+            appId: "1:653425773679:web:a3d211685992a1c857119a",
+            measurementId: "G-HT8KNK43RC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let unsubscribeSubmissions = null; 
+
+        // --- CLIENT SUBMIT ---
+        window.handleClientSubmit = async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.querySelector('span').innerHTML;
+            btn.querySelector('span').innerHTML = "Transmitting...";
+            btn.disabled = true;
+
+            const d = new Date();
+            const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+            const newSubmission = {
+                timestamp: Date.now(), 
+                date: dateStr,
+                name: document.getElementById('projectName').value,
+                phone: document.getElementById('phone').value,
+                whatsapp: document.getElementById('whatsapp').value || 'N/A',
+                budget: document.getElementById('budget').value,
+                reqs: document.getElementById('requirements').value
+            };
+
+            try {
+                await addDoc(collection(db, "clientRequests"), newSubmission);
+                
+                const form = document.getElementById('client-form');
+                const successMsg = document.getElementById('success-message');
+                const errorMsg = document.getElementById('form-error');
+                
+                form.reset();
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+
+                setTimeout(() => { successMsg.classList.add('hidden'); }, 6000);
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                document.getElementById('form-error').classList.remove('hidden');
+            } finally {
+                btn.querySelector('span').innerHTML = "Conform"; 
+                btn.disabled = false;
+            }
+        };
+
+        // --- ADMIN AUTH ---
+        window.handleAdminLogin = (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+
+            if (password === 'Iamadmin') {
+                window.showView('admin-panel-view');
+                fetchAdminData();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        };
+
+        window.logoutAdmin = () => {
+            if (unsubscribeSubmissions) unsubscribeSubmissions(); 
+            window.showView('home-view');
+        };
+
+        // --- FETCH DATA ---
+        function fetchAdminData() {
+            document.getElementById('loading-state').classList.remove('hidden');
+            document.getElementById('submissions-list').classList.add('hidden');
+            document.getElementById('empty-state').classList.add('hidden');
+
+            const q = query(collection(db, "clientRequests"));
+            
+            unsubscribeSubmissions = onSnapshot(q, (snapshot) => {
+                const subs = [];
+                snapshot.forEach((doc) => {
+                    subs.push({ firebaseId: doc.id, ...doc.data() });
+                });
+                renderAdminPanel(subs);
+            }, (error) => {
+                console.error("Firebase fetch error:", error);
+                document.getElementById('loading-state').innerHTML = `<p class="text-red-400 text-xs">Database Connection Failed.</p>`;
+            });
+        }
+
+        // --- DELETE DATA ---
+        window.deleteSubmission = async (firebaseId) => {
+            if(confirm("Confirm permanent deletion of this record?")) {
+                try {
+                    await deleteDoc(doc(db, "clientRequests", firebaseId));
+                } catch (error) {
+                    console.error("Deletion error: ", error);
+                }
+            }
+        };
+
+        // --- RENDER DASHBOARD ---
+        function renderAdminPanel(submissionsData) {
+            document.getElementById('loading-state').classList.add('hidden');
+            const list = document.getElementById('submissions-list');
+            const emptyState = document.getElementById('empty-state');
+            
+            list.innerHTML = '';
+
+            if (submissionsData.length === 0) {
+                list.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            list.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            const sorted = [...submissionsData].sort((a, b) => b.timestamp - a.timestamp);
+
+            sorted.forEach((sub, index) => {
+                const card = document.createElement('div');
+                // Added staggering to dashboard cards
+                card.style.animationDelay = `${index * 100}ms`;
+                card.className = 'glass-card p-5 rounded-3xl animate-fade-in-up relative overflow-hidden group';
+                card.innerHTML = `
+                    <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex justify-between items-center mb-4 pl-2 border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white text-base truncate pr-2">${sub.name}</h3>
+                        <span class="text-[9px] text-zinc-500 border border-white/10 px-2 py-1 rounded-full uppercase tracking-widest font-bold">${sub.date}</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 mb-4 pl-2">
+                        <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
+                            <p class="text-[8px] text-zinc-500 uppercase tracking-widest mb-1">Comms</p>
+                            <p class="text-xs text-white font-medium truncate">${sub.phone}</p>
+                        </div>
+                        <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
+                            <p class="text-[8px] text-zinc-500 uppercase tracking-widest mb-1">WhatsApp</p>
+                            <p class="text-xs text-green-400 font-medium truncate">${sub.whatsapp}</p>
+                        </div>
+                        <div class="col-span-2 bg-blue-500/5 p-2.5 rounded-xl border border-blue-500/10">
+                            <p class="text-[8px] text-blue-400/70 uppercase tracking-widest mb-1">Capital Allocation</p>
+                            <p class="text-xs text-blue-300 font-bold">${sub.budget}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-black/30 p-3.5 rounded-xl text-xs text-zinc-400 mb-5 max-h-24 overflow-y-auto custom-scrollbar ml-2 leading-relaxed border border-white/5 font-light shadow-inner">
+                        ${sub.reqs}
+                    </div>
+                    
+                    <button onclick="deleteSubmission('${sub.firebaseId}')" class="w-full text-red-400 bg-transparent hover:bg-red-500/10 border border-red-500/20 py-3 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ml-1">
+                        Purge Record
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
