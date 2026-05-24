@@ -1,0 +1,793 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wolf Developer | Ultra Premium Antigravity</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis for Smooth Scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#030304',
+                        primary: '#00f2fe',
+                        secondary: '#4facfe',
+                        accent: '#f093fb',
+                        warning: '#f5576c',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700;900&display=swap');
+
+        /* Strict core layout for mobile safety */
+        html, body {
+            background-color: #030304;
+            color: #f8fafc;
+            overflow-x: hidden !important;
+            width: 100vw;
+            max-width: 100%;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior: none;
+        }
+
+        @media (pointer: fine) { body { cursor: none; } }
+
+        /* Lenis Smooth Scroll Base */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Ultra Smooth Custom Cursor */
+        #cursor-dot, #cursor-follower {
+            position: fixed; top: 0; left: 0;
+            border-radius: 50%; pointer-events: none; z-index: 99999;
+        }
+        #cursor-dot {
+            width: 8px; height: 8px; background: #fff;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: exclusion;
+        }
+        #cursor-follower {
+            width: 40px; height: 40px; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+        #cursor-glow {
+            position: fixed; top: 0; left: 0;
+            width: 400px; height: 400px; transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(240, 147, 251, 0.12) 0%, rgba(0, 242, 254, 0.05) 100%);
+            filter: blur(60px); pointer-events: none; z-index: 0;
+        }
+        @media (pointer: coarse), (max-width: 768px) {
+            #cursor-dot, #cursor-follower, #cursor-glow { display: none !important; }
+        }
+
+        /* Glassmorphism & Gradients */
+        .glass {
+            background: rgba(20, 20, 25, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .text-gradient-vibrant {
+            background: linear-gradient(135deg, #00f2fe, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .colorful-border {
+            position: relative; background: #050505; border-radius: 1.5rem; z-index: 1;
+        }
+        .colorful-border::before {
+            content: ""; position: absolute; inset: -2px; border-radius: 1.6rem;
+            background: linear-gradient(45deg, #00f2fe, #f093fb, #f5576c, #00f2fe);
+            z-index: -1; opacity: 0.4; transition: opacity 0.4s ease;
+        }
+        .colorful-border:hover::before { opacity: 0.8; }
+
+        /* Floating Atmosphere Orbs */
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(90px);
+            opacity: 0.3; z-index: -1; pointer-events: none;
+        }
+        .orb-1 { background: radial-gradient(circle, #00f2fe, transparent); }
+        .orb-2 { background: radial-gradient(circle, #f093fb, transparent); }
+        .orb-3 { background: radial-gradient(circle, #f5576c, transparent); }
+
+        /* Cinematic Text Reveal Mask */
+        .reveal-mask {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .reveal-text {
+            display: inline-block;
+            will-change: transform;
+            transform: translateY(110%) rotate(5deg);
+        }
+
+        /* Physics Classes */
+        .jelly-element { will-change: transform, skewY; transform-origin: center; }
+        .magnetic-wrap { display: inline-block; position: relative; }
+        .magnetic-content { will-change: transform; pointer-events: none; }
+        
+        .view-hidden { display: none !important; }
+        .admin-input {
+            width: 100%; border-bottom: 2px solid rgba(255,255,255,0.15);
+            padding: 12px 0; color: white; outline: none; transition: border-color 0.3s;
+            background: transparent;
+        }
+        .admin-input:focus { border-color: #00f2fe; }
+
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <!-- Fluid Trailing Cursor -->
+    <div id="cursor-glow"></div>
+    <div id="cursor-follower"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- ========================================== -->
+    <!-- PUBLIC PORTFOLIO VIEW -->
+    <!-- ========================================== -->
+    <div id="view-public" class="w-full min-h-screen relative overflow-hidden">
+        
+        <!-- Navbar -->
+        <nav class="fixed top-0 w-full z-[60] px-4 md:px-6 py-6 transition-transform duration-500" id="navbar">
+            <div class="max-w-7xl mx-auto flex justify-between items-center px-2">
+                <div class="flex items-center gap-2 text-xl md:text-2xl font-display font-black text-white tracking-wider z-[70] magnetic-wrap group cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="magnetic-content flex items-center gap-2">
+                        <i class="ph-fill ph-wolf text-accent text-2xl md:text-3xl group-hover:scale-110 transition-transform duration-300"></i>
+                        WOLF<span class="text-primary">DEV</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex gap-10 text-sm font-bold text-gray-300 glass px-8 py-3 rounded-full">
+                    <div class="magnetic-wrap"><a href="#home" class="magnetic-content block hover:text-primary transition-colors uppercase tracking-widest cursor-pointer">Home</a></div>
+                    <div class="magnetic-wrap"><a href="#projects" class="magnetic-content block hover:text-accent transition-colors uppercase tracking-widest cursor-pointer">Works</a></div>
+                    <div class="magnetic-wrap"><a href="#appreciation" class="magnetic-content block hover:text-warning transition-colors uppercase tracking-widest cursor-pointer">Praise</a></div>
+                    <div class="magnetic-wrap"><a href="#contact" class="magnetic-content block hover:text-primary transition-colors uppercase tracking-widest cursor-pointer">Contact</a></div>
+                </div>
+                
+                <div class="hidden md:block magnetic-wrap">
+                    <button onclick="document.getElementById('contact').scrollIntoView()" class="magnetic-content px-8 py-3 bg-white text-dark font-black rounded-full uppercase text-xs tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Start Project
+                    </button>
+                </div>
+
+                <button id="menu-btn" class="md:hidden text-2xl text-white z-[70] relative p-2 focus:outline-none">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="fixed inset-0 bg-dark/95 z-[65] flex flex-col items-center justify-center gap-8 md:hidden opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-xl">
+                <a href="#home" class="mobile-link text-3xl font-display font-black hover:text-primary transition-colors uppercase tracking-widest">Home</a>
+                <a href="#projects" class="mobile-link text-3xl font-display font-black hover:text-accent transition-colors uppercase tracking-widest">Works</a>
+                <a href="#appreciation" class="mobile-link text-3xl font-display font-black hover:text-warning transition-colors uppercase tracking-widest">Praise</a>
+                <a href="#contact" class="mobile-link text-3xl font-display font-black hover:text-primary transition-colors uppercase tracking-widest">Contact</a>
+                <button onclick="document.getElementById('contact').scrollIntoView(); document.getElementById('menu-btn').click();" class="mt-8 px-8 py-4 bg-white text-dark font-black rounded-full uppercase text-sm tracking-widest active:scale-95 transition-transform">
+                    Start Project
+                </button>
+            </div>
+        </nav>
+
+        <main class="jelly-element">
+            <!-- Hero Section -->
+            <section id="home" class="section relative min-h-[100dvh] flex items-center justify-center pt-20 px-4 pb-12 w-full">
+                <div class="orb orb-1 w-[400px] md:w-[700px] h-[400px] md:h-[700px] top-10 left-[-100px]"></div>
+                <div class="orb orb-2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bottom-10 right-[-50px]"></div>
+
+                <!-- 20x Antigravity BG -->
+                <div class="absolute inset-0 z-0 pointer-events-none">
+                    <div class="absolute text-primary opacity-30 text-5xl md:text-7xl ag-element" data-speed-y="2.5" data-speed-r="-0.8" style="top: 20%; left: 10%;"><i class="ph ph-hexagon"></i></div>
+                    <div class="absolute text-accent opacity-20 text-7xl md:text-9xl ag-element" data-speed-y="-1.8" data-speed-x="1" style="top: 60%; left: 5%;"><i class="ph ph-asterisk"></i></div>
+                    <div class="absolute text-warning opacity-20 text-6xl md:text-8xl ag-element" data-speed-y="3.0" data-speed-r="1.2" style="top: 70%; right: 10%;"><i class="ph ph-aperture"></i></div>
+                </div>
+
+                <div class="relative z-20 w-full max-w-5xl mx-auto flex flex-col items-center text-center">
+                    
+                    <div class="reveal-mask mb-6">
+                        <div class="reveal-text inline-flex items-center gap-2 px-5 py-2 rounded-full glass border border-accent/50 text-accent text-[10px] md:text-xs font-black tracking-widest uppercase">
+                            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span><span class="relative inline-flex rounded-full h-full w-full bg-accent"></span></span>
+                            System Online
+                        </div>
+                    </div>
+                    
+                    <div class="w-full mb-6">
+                        <div class="reveal-mask"><h1 class="reveal-text text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-black leading-none">CRAFTING</h1></div><br>
+                        <div class="reveal-mask"><h1 class="reveal-text text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-black leading-none text-gradient-vibrant pb-2">DIGITAL MAGIC</h1></div>
+                    </div>
+                    
+                    <div class="reveal-mask mb-10 max-w-2xl">
+                        <p class="reveal-text text-base sm:text-lg md:text-2xl text-gray-300 font-light px-2">
+                            Supercharged UI/UX. Hyper-smooth animations. Award-winning architectures built for the modern web.
+                        </p>
+                    </div>
+                    
+                    <div class="reveal-mask w-full px-4 flex justify-center">
+                        <div class="reveal-text magnetic-wrap">
+                            <button onclick="document.getElementById('projects').scrollIntoView()" class="magnetic-content w-full sm:w-auto px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-primary to-accent text-white font-black rounded-full text-base md:text-xl shadow-[0_0_40px_rgba(240,147,251,0.4)] transition-shadow hover:shadow-[0_0_60px_rgba(240,147,251,0.7)] cursor-pointer">
+                                View Latest Works
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="section py-24 md:py-40 relative w-full overflow-hidden">
+                <div class="orb orb-2 w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15"></div>
+                
+                <div class="max-w-7xl mx-auto px-6 mb-16 md:mb-24 relative z-10 w-full text-center md:text-left">
+                    <div class="reveal-mask"><h2 class="reveal-text text-5xl md:text-7xl font-display font-black leading-tight"><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">LATEST</span> WORKS</h2></div><br>
+                    <div class="reveal-mask mt-2"><p class="reveal-text text-gray-400 text-base md:text-xl tracking-wide">Scroll to explore the wild.</p></div>
+                </div>
+
+                <div id="public-projects-container" class="projects-wrapper flex flex-col md:flex-row gap-8 md:gap-14 px-4 md:px-6 pb-10 md:w-max relative z-10 w-full">
+                    <div class="text-accent flex items-center justify-center gap-2 font-bold animate-pulse w-full h-[200px]">
+                        <i class="ph ph-spinner-gap animate-spin text-2xl"></i> Syncing with Database...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appreciation Section -->
+            <section id="appreciation" class="section py-24 md:py-40 relative w-full overflow-hidden">
+                <div class="orb orb-3 w-[500px] h-[500px] top-1/2 left-0 transform -translate-y-1/2 opacity-15"></div>
+                
+                <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full flex flex-col items-center">
+                    
+                    <div class="text-center w-full mb-16 md:mb-24">
+                        <div class="reveal-mask"><h2 class="reveal-text text-5xl md:text-7xl font-display font-black leading-tight">HOWLS OF</h2></div><br>
+                        <div class="reveal-mask"><h2 class="reveal-text text-5xl md:text-7xl font-display font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-warning to-accent pb-2">APPRECIATION</h2></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 w-full relative">
+                        
+                        <div class="ag-element" data-speed-y="0.8" data-speed-x="-0.2">
+                            <div class="glass p-8 md:p-10 rounded-3xl w-full border border-primary/20 h-full">
+                                <i class="ph-fill ph-quotes text-5xl text-primary mb-6 opacity-40"></i>
+                                <p class="text-base md:text-lg text-gray-300 mb-8 font-light leading-relaxed">"The Wolf Pack delivered a UI that completely defied our expectations. It literally feels like interacting with the future."</p>
+                                <div class="flex items-center gap-4 mt-auto">
+                                    <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary text-lg">A</div>
+                                    <div><h4 class="font-bold text-white text-base">Alex Mercer</h4><p class="text-[10px] text-primary tracking-widest uppercase">CEO, TechNova</p></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ag-element lg:-mt-10" data-speed-y="1.4" data-speed-x="0.2">
+                            <div class="glass p-8 md:p-10 rounded-3xl w-full border border-accent/20 h-full">
+                                <i class="ph-fill ph-quotes text-5xl text-accent mb-6 opacity-40"></i>
+                                <p class="text-base md:text-lg text-gray-300 mb-8 font-light leading-relaxed">"Insane scroll physics and a buttery smooth experience. They truly lead the pack in modern web development."</p>
+                                <div class="flex items-center gap-4 mt-auto">
+                                    <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center font-bold text-accent text-lg">S</div>
+                                    <div><h4 class="font-bold text-white text-base">Sarah Jenkins</h4><p class="text-[10px] text-accent tracking-widest uppercase">Founder, OmniApp</p></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ag-element md:col-span-2 lg:col-span-1 lg:mt-16" data-speed-y="0.5" data-speed-r="0.05">
+                            <div class="glass p-8 md:p-10 rounded-3xl w-full border border-warning/20 h-full">
+                                <i class="ph-fill ph-quotes text-5xl text-warning mb-6 opacity-40"></i>
+                                <p class="text-base md:text-lg text-gray-300 mb-8 font-light leading-relaxed">"Our conversion rates absolutely skyrocketed after Wolf Developer rebuilt our frontend architecture. Absolute wizards."</p>
+                                <div class="flex items-center gap-4 mt-auto">
+                                    <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center font-bold text-warning text-lg">D</div>
+                                    <div><h4 class="font-bold text-white text-base">David Chen</h4><p class="text-[10px] text-warning tracking-widest uppercase">Director, LunarFi</p></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="section py-24 md:py-40 relative bg-dark z-20 border-t border-white/5 w-full overflow-hidden">
+                <div class="orb orb-1 w-[500px] h-[500px] top-0 left-0 opacity-10"></div>
+                
+                <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10 w-full">
+                    <div class="grid md:grid-cols-2 gap-16 lg:gap-24 items-start md:items-center w-full">
+                        
+                        <div class="w-full text-center md:text-left">
+                            <div class="reveal-mask"><h2 class="reveal-text text-5xl md:text-7xl font-display font-black mb-4 leading-tight">LET'S BUILD <br><span class="text-gradient-vibrant block mt-1 pb-2">TOGETHER</span></h2></div>
+                            <br><div class="reveal-mask"><p class="reveal-text text-base md:text-xl text-gray-400 mb-8">Drop your details below. The Wolf Pack is ready for a new challenge.</p></div>
+                            
+                            <div class="flex justify-center md:justify-start gap-6 mt-8">
+                                <div class="magnetic-wrap"><a href="#" class="magnetic-content w-14 h-14 rounded-full glass flex items-center justify-center text-2xl hover:text-accent hover:border-accent/50 transition-colors"><i class="ph ph-twitter-logo"></i></a></div>
+                                <div class="magnetic-wrap"><a href="#" class="magnetic-content w-14 h-14 rounded-full glass flex items-center justify-center text-2xl hover:text-primary hover:border-primary/50 transition-colors"><i class="ph ph-github-logo"></i></a></div>
+                                <div class="magnetic-wrap"><a href="#" class="magnetic-content w-14 h-14 rounded-full glass flex items-center justify-center text-2xl hover:text-warning hover:border-warning/50 transition-colors"><i class="ph ph-dribbble-logo"></i></a></div>
+                            </div>
+                        </div>
+
+                        <!-- Form Wrapper -->
+                        <div class="w-full ag-element" data-speed-y="0.8">
+                            <div class="colorful-border p-[2px] w-full rounded-[1.6rem]">
+                                <div class="glass p-8 md:p-12 rounded-[1.5rem] w-full">
+                                    <form id="client-form" class="space-y-8 w-full relative z-20">
+                                        <div class="w-full">
+                                            <label class="text-[10px] md:text-xs font-black tracking-widest text-primary uppercase mb-2 block">Client Name</label>
+                                            <input type="text" id="client-name" required class="admin-input text-base md:text-lg" placeholder="John Doe">
+                                        </div>
+                                        <div class="w-full">
+                                            <label class="text-[10px] md:text-xs font-black tracking-widest text-accent uppercase mb-2 block">Email Address</label>
+                                            <input type="email" id="client-email" required class="admin-input text-base md:text-lg" placeholder="john@example.com">
+                                        </div>
+                                        <div class="w-full">
+                                            <label class="text-[10px] md:text-xs font-black tracking-widest text-warning uppercase mb-2 block">Project Details</label>
+                                            <textarea id="client-msg" required class="admin-input text-base md:text-lg min-h-[100px] resize-none" placeholder="Tell us about your vision..."></textarea>
+                                        </div>
+                                        <div class="w-full mt-6 magnetic-wrap block">
+                                            <button type="submit" class="magnetic-content w-full py-5 bg-white text-dark font-black text-base uppercase tracking-widest rounded-xl hover:bg-gray-200 transition-colors shadow-lg cursor-pointer">
+                                                Send Request <i class="ph-bold ph-paper-plane-right ml-2"></i>
+                                            </button>
+                                        </div>
+                                        <p id="form-success" class="text-green-400 font-bold hidden text-center mt-4 text-sm">Request sent! We will howl back soon.</p>
+                                        <p id="form-error" class="text-warning font-bold hidden text-center mt-4 text-sm">Database error. Please try again.</p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-4 right-4 text-[10px] text-white/20 hover:text-white transition-colors cursor-pointer p-4 z-30 font-bold" onclick="window.appState.navigate('login')">
+                    System Admin
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ADMIN LOGIN & DASHBOARD VIEW -->
+    <!-- ========================================== -->
+    <div id="view-login" class="view-hidden w-full min-h-screen flex items-center justify-center relative p-4">
+        <div class="orb orb-3 w-[600px] h-[600px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="relative z-10 glass p-8 md:p-10 rounded-3xl w-full max-w-md text-center">
+            <i class="ph-fill ph-lock-key text-5xl text-accent mb-4"></i>
+            <h2 class="text-2xl md:text-3xl font-display font-black mb-8">SYSTEM OVERRIDE</h2>
+            <form id="login-form" class="space-y-6">
+                <input type="password" id="admin-pass" class="admin-input text-center text-xl tracking-[0.3em]" placeholder="PASSWORD" required>
+                <p id="login-error" class="text-warning text-sm font-bold hidden">ACCESS DENIED.</p>
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-primary to-accent text-white font-black rounded-xl hover:opacity-80 active:scale-95 transition-all text-sm">AUTHENTICATE</button>
+                <button type="button" onclick="window.appState.navigate('public')" class="text-[10px] text-gray-400 hover:text-white uppercase tracking-widest mt-4 p-2 block w-full">Return to Public Site</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="view-admin" class="view-hidden w-full min-h-[100dvh] bg-[#0a0a0f] text-white flex flex-col md:flex-row">
+        <aside class="w-full md:w-64 glass border-b md:border-b-0 md:border-r border-white/10 p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch md:h-screen sticky top-0 z-20 overflow-x-auto">
+            <div class="flex items-center gap-2 text-lg font-display font-black md:mb-12 shrink-0 mr-4 md:mr-0">
+                <i class="ph-fill ph-shield-check text-primary text-xl"></i> <span class="hidden sm:inline">ADMIN</span>
+            </div>
+            <nav class="flex md:flex-col gap-2 flex-1 md:flex-none">
+                <button onclick="window.adminUI.switchTab('leads')" id="tab-btn-leads" class="text-xs md:text-sm w-auto md:w-full text-left px-3 py-2 rounded-lg bg-white/10 font-bold flex items-center gap-2 transition-colors whitespace-nowrap">
+                    <i class="ph ph-users text-lg"></i> <span class="hidden sm:inline">Client Details</span>
+                </button>
+                <button onclick="window.adminUI.switchTab('projects')" id="tab-btn-projects" class="text-xs md:text-sm w-auto md:w-full text-left px-3 py-2 rounded-lg font-bold flex items-center gap-2 text-gray-400 hover:text-white transition-colors hover:bg-white/5 whitespace-nowrap">
+                    <i class="ph ph-briefcase text-lg"></i> <span class="hidden sm:inline">Manage Works</span>
+                </button>
+            </nav>
+            <button onclick="window.appState.logout()" class="md:mt-auto flex items-center gap-2 text-warning hover:text-red-400 font-bold px-3 py-2 text-xs md:text-sm shrink-0 ml-2 md:ml-0">
+                <i class="ph ph-sign-out text-lg"></i> <span class="hidden sm:inline">Logout</span>
+            </button>
+        </aside>
+        
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto h-full w-full max-w-full">
+            <div id="tab-leads" class="admin-tab block w-full">
+                <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-display font-black">Customer Details</h2></div>
+                <div class="glass rounded-xl w-full table-container">
+                    <table class="w-full text-left text-xs min-w-[600px]">
+                        <thead class="bg-white/5 text-gray-300 font-bold uppercase tracking-wider text-[10px]">
+                            <tr><th class="p-4">Date</th><th class="p-4">Name</th><th class="p-4">Email</th><th class="p-4">Message</th><th class="p-4 text-right">Action</th></tr>
+                        </thead>
+                        <tbody id="admin-leads-tbody" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-projects" class="admin-tab hidden w-full">
+                <h2 class="text-2xl font-display font-black mb-6">Manage Works</h2>
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="glass p-5 rounded-2xl border border-white/10 xl:col-span-1 h-fit">
+                        <h3 class="font-bold text-lg mb-4 text-primary flex items-center gap-2"><i class="ph ph-plus-circle"></i> Add Work</h3>
+                        <form id="add-project-form" class="space-y-4">
+                            <input type="text" id="proj-title" class="admin-input text-sm p-2 w-full" required placeholder="Project Title">
+                            <input type="text" id="proj-cat" class="admin-input text-sm p-2 w-full" required placeholder="Category">
+                            <input type="text" id="proj-img" class="admin-input text-sm p-2 w-full" required placeholder="Image URL">
+                            <input type="text" id="proj-link" class="admin-input text-sm p-2 w-full" required placeholder="Website URL (e.g. example.com)">
+                            <textarea id="proj-desc" class="admin-input text-sm p-2 w-full resize-none h-20" required placeholder="Description"></textarea>
+                            <button id="add-project-btn" type="submit" class="w-full py-3 bg-white text-dark font-black rounded-xl hover:bg-gray-200 mt-4 active:scale-95 transition-transform">Publish</button>
+                        </form>
+                    </div>
+                    <div class="xl:col-span-2 space-y-4 w-full" id="admin-projects-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase & Ultra Premium JS Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // FIREBASE SETUP
+        const userConfig = {
+            apiKey: "AIzaSyAWKoUO9dx7j74fw3TFjZJSVZJqfXR_fYk", authDomain: "wolf-d3f5c.firebaseapp.com", projectId: "wolf-d3f5c", storageBucket: "wolf-d3f5c.firebasestorage.app", messagingSenderId: "653425773679", appId: "1:653425773679:web:a3d211685992a1c857119a"
+        };
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'wolf-dev-fallback';
+
+        const isCanvas = typeof __firebase_config !== 'undefined';
+        const projectsPath = isCanvas ? `artifacts/${appId}/public/data/projects` : 'projects';
+        const leadsPath = isCanvas ? `artifacts/${appId}/public/data/leads` : 'leads';
+        const appData = { projects: [], leads: [], user: null };
+
+        const initAuth = async () => {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
+            else await signInAnonymously(auth);
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            appData.user = user;
+            if (user) {
+                onSnapshot(collection(db, projectsPath), (snapshot) => {
+                    const projects = []; snapshot.forEach(doc => projects.push({ id: doc.id, ...doc.data() }));
+                    appData.projects = projects.sort((a, b) => b.createdAt - a.createdAt);
+                    window.publicUI.renderProjects();
+                    if (!document.getElementById('view-admin').classList.contains('view-hidden')) window.adminUI.renderProjects();
+                });
+                onSnapshot(collection(db, leadsPath), (snapshot) => {
+                    const leads = []; snapshot.forEach(doc => leads.push({ id: doc.id, ...doc.data() }));
+                    appData.leads = leads.sort((a, b) => b.createdAt - a.createdAt);
+                    if (!document.getElementById('view-admin').classList.contains('view-hidden')) window.adminUI.renderLeads();
+                });
+            }
+        });
+
+        // UI Routing & Admin Core
+        window.appState = {
+            navigate: function(view) {
+                document.getElementById('view-public').classList.add('view-hidden');
+                document.getElementById('view-login').classList.add('view-hidden');
+                document.getElementById('view-admin').classList.add('view-hidden');
+                
+                if (view === 'public') {
+                    document.getElementById('view-public').classList.remove('view-hidden');
+                    setTimeout(() => { ScrollTrigger.refresh(); if(window.innerWidth >= 768) initHorizontalScroll(); }, 100);
+                } else if (view === 'login') {
+                    document.getElementById('view-login').classList.remove('view-hidden');
+                } else if (view === 'admin') {
+                    document.getElementById('view-admin').classList.remove('view-hidden');
+                    window.adminUI.renderLeads(); window.adminUI.renderProjects();
+                }
+            },
+            login: function(e) {
+                e.preventDefault();
+                if (document.getElementById('admin-pass').value === 'Iamadmin') {
+                    document.getElementById('login-error').classList.add('hidden');
+                    document.getElementById('admin-pass').value = ''; this.navigate('admin');
+                } else document.getElementById('login-error').classList.remove('hidden');
+            },
+            logout: function() { this.navigate('public'); }
+        };
+
+        window.adminUI = {
+            switchTab: function(tabName) {
+                document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+                const bc = "text-xs md:text-sm w-auto md:w-full text-left px-3 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors whitespace-nowrap text-gray-400 hover:text-white hover:bg-white/5";
+                document.getElementById('tab-btn-leads').className = bc; document.getElementById('tab-btn-projects').className = bc;
+                document.getElementById(`tab-btn-${tabName}`).classList.add('bg-white/10', 'text-white');
+                document.getElementById(`tab-btn-${tabName}`).classList.remove('text-gray-400');
+            },
+            renderLeads: function() {
+                const tbody = document.getElementById('admin-leads-tbody');
+                if (appData.leads.length === 0) return tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No client requests yet.</td></tr>`;
+                tbody.innerHTML = appData.leads.map(lead => `
+                    <tr class="hover:bg-white/5 border-b border-white/5">
+                        <td class="p-4 text-gray-400 whitespace-nowrap">${lead.date}</td>
+                        <td class="p-4 font-bold text-white whitespace-nowrap">${lead.name}</td>
+                        <td class="p-4 text-primary whitespace-nowrap">${lead.email}</td>
+                        <td class="p-4 text-gray-400 max-w-[200px] truncate">${lead.msg}</td>
+                        <td class="p-4 text-right"><button onclick="window.adminUI.deleteLead('${lead.id}')" class="text-warning p-2 glass rounded-lg"><i class="ph ph-trash text-lg"></i></button></td>
+                    </tr>
+                `).join('');
+            },
+            deleteLead: async function(id) { if(confirm("Delete this?")) await deleteDoc(doc(db, leadsPath, id)); },
+            renderProjects: function() {
+                const list = document.getElementById('admin-projects-list');
+                if (appData.projects.length === 0) return list.innerHTML = `<div class="p-8 text-center text-gray-500 glass rounded-xl">No projects.</div>`;
+                list.innerHTML = appData.projects.map(proj => `
+                    <div class="glass p-4 rounded-xl flex flex-col sm:flex-row gap-4 border border-white/5 w-full">
+                        <img src="${proj.img}" class="w-full sm:w-24 h-32 sm:h-24 object-cover rounded-lg">
+                        <div class="flex-1 overflow-hidden min-w-0">
+                            <span class="text-[10px] font-bold text-accent uppercase">${proj.category}</span>
+                            <h4 class="text-base font-bold text-white truncate">${proj.title}</h4>
+                            <a href="${proj.link || '#'}" target="_blank" class="text-xs text-primary truncate block mt-1">${proj.link || 'No Link'}</a>
+                        </div>
+                        <button onclick="window.adminUI.deleteProject('${proj.id}')" class="p-3 text-red-400 glass rounded-xl self-start sm:self-center shrink-0"><i class="ph-bold ph-trash"></i></button>
+                    </div>
+                `).join('');
+            },
+            deleteProject: async function(id) { if(confirm("Delete work?")) await deleteDoc(doc(db, projectsPath, id)); },
+            handleAddProject: async function(e) {
+                e.preventDefault(); if(!appData.user) return;
+                const btn = document.getElementById('add-project-btn'); btn.innerHTML = `Publishing...`; btn.disabled = true;
+                let rawLink = document.getElementById('proj-link').value; if (rawLink && !rawLink.startsWith('http')) rawLink = 'https://' + rawLink;
+                let rawImg = document.getElementById('proj-img').value; if (rawImg && !rawImg.startsWith('http')) rawImg = 'https://' + rawImg;
+                const payload = { title: document.getElementById('proj-title').value, category: document.getElementById('proj-cat').value, img: rawImg, link: rawLink, desc: document.getElementById('proj-desc').value, createdAt: Date.now() };
+                try { await addDoc(collection(db, projectsPath), payload); e.target.reset(); } 
+                catch (err) { alert("Error saving."); } finally { btn.innerHTML = `Publish`; btn.disabled = false; }
+            }
+        };
+
+        window.publicUI = {
+            renderProjects: function() {
+                const container = document.getElementById('public-projects-container');
+                if (appData.projects.length === 0) return container.innerHTML = `<div class="w-full text-center text-white py-10 font-bold">Awaiting Data...</div>`;
+                
+                // Note the internal image parallax class 'parallax-img'
+                container.innerHTML = appData.projects.map((proj) => `
+                    <div class="flex-shrink-0 w-full md:w-[600px] h-[400px] md:h-[500px]">
+                        <a href="${proj.link || '#'}" target="_blank" class="block colorful-border rounded-[2rem] w-full h-full hover-target overflow-hidden ag-element group" data-speed-y="0.8" data-speed-x="-0.1">
+                            <div class="absolute inset-[2px] rounded-[1.9rem] overflow-hidden bg-dark z-10">
+                                <img src="${proj.img}" class="parallax-img w-full h-[120%] object-cover opacity-60 group-hover:opacity-30 transition-opacity duration-700" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-8 md:p-12 flex flex-col justify-end">
+                                    <span class="text-accent text-[10px] md:text-sm font-black tracking-widest uppercase mb-2 block transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">${proj.category}</span>
+                                    <h3 class="text-4xl md:text-6xl font-display font-black text-white mb-4 leading-tight drop-shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 ease-out">${proj.title}</h3>
+                                    <div class="overflow-hidden h-0 group-hover:h-auto transition-all duration-500 opacity-0 group-hover:opacity-100">
+                                        <p class="text-gray-300 text-sm md:text-base drop-shadow-md mb-6">${proj.desc}</p>
+                                        <span class="inline-flex items-center gap-2 text-dark font-black text-xs md:text-sm uppercase tracking-widest bg-white px-6 py-3 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)]">View Project <i class="ph-bold ph-arrow-up-right"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `).join('');
+
+                initParallaxScrolls(); initMagnetic();
+                if(window.innerWidth >= 768) initHorizontalScroll();
+            },
+            handleClientSubmit: async function(e) {
+                e.preventDefault(); if(!appData.user) return;
+                const payload = { name: document.getElementById('client-name').value, email: document.getElementById('client-email').value, msg: document.getElementById('client-msg').value, date: new Date().toLocaleDateString(), createdAt: Date.now() };
+                try { await addDoc(collection(db, leadsPath), payload); document.getElementById('form-success').classList.remove('hidden'); e.target.reset(); setTimeout(() => document.getElementById('form-success').classList.add('hidden'), 5000); } 
+                catch (err) { document.getElementById('form-error').classList.remove('hidden'); }
+            }
+        };
+
+        // Form Event Listeners
+        document.getElementById('login-form').addEventListener('submit', (e) => window.appState.login(e));
+        document.getElementById('add-project-form').addEventListener('submit', (e) => window.adminUI.handleAddProject(e));
+        document.getElementById('client-form').addEventListener('submit', (e) => window.publicUI.handleClientSubmit(e));
+        
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('#menu-btn i');
+            if (menu.style.opacity === '1') {
+                menu.style.opacity = '0'; menu.style.pointerEvents = 'none';
+                icon.className = 'ph ph-list'; lenis.start();
+            } else {
+                menu.style.opacity = '1'; menu.style.pointerEvents = 'auto';
+                icon.className = 'ph ph-x'; lenis.stop();
+            }
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => document.getElementById('menu-btn').click());
+        });
+
+        // ==========================================
+        // ULTRA PREMIUM PHYSICS & ANIMATION ENGINE
+        // ==========================================
+        
+        // 1. Lenis Smooth Scroll Setup (Upgraded Curve)
+        const lenis = new Lenis({
+            duration: 1.8, // Slower, heavier duration
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Expo ease
+            direction: 'vertical', gestureDirection: 'vertical', smooth: true,
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0, 0);
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 2. Silky Spring Trailing Cursor
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const dot = document.getElementById('cursor-dot');
+            const follower = document.getElementById('cursor-follower');
+            const glow = document.getElementById('cursor-glow');
+            
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            let folX = mouseX, folY = mouseY;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                // Move dot and glow instantly
+                gsap.set(dot, { x: mouseX, y: mouseY });
+                gsap.to(glow, { x: mouseX, y: mouseY, duration: 0.6, ease: "power2.out" });
+            });
+
+            // Physics loop for the trailing circle
+            gsap.ticker.add(() => {
+                const dt = 1.0 - Math.pow(1.0 - 0.2, gsap.ticker.deltaRatio());
+                folX += (mouseX - folX) * dt;
+                folY += (mouseY - folY) * dt;
+                gsap.set(follower, { x: folX, y: folY });
+            });
+        }
+
+        // 3. Magnetic Interaction Engine (Safe on DOM updates)
+        window.initMagnetic = function() {
+            if (!window.matchMedia("(pointer: fine)").matches) return;
+            document.querySelectorAll('.magnetic-wrap').forEach(wrap => {
+                const content = wrap.querySelector('.magnetic-content');
+                if(!content) return;
+                
+                // Clear old listeners safely
+                const newWrap = wrap.cloneNode(true);
+                wrap.parentNode.replaceChild(newWrap, wrap);
+                const newContent = newWrap.querySelector('.magnetic-content');
+
+                newWrap.addEventListener('mousemove', (e) => {
+                    const rect = newWrap.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
+                    const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                    gsap.to(newContent, { x, y, duration: 0.6, ease: "power3.out" });
+                });
+                newWrap.addEventListener('mouseleave', () => {
+                    gsap.to(newContent, { x: 0, y: 0, duration: 1.2, ease: "elastic.out(1, 0.3)" });
+                });
+            });
+        };
+        setTimeout(initMagnetic, 500);
+
+        // 4. Cinematic Text Reveal (On Load & Scroll)
+        window.initReveals = function() {
+            gsap.utils.toArray('.reveal-text').forEach((text, i) => {
+                gsap.to(text, {
+                    y: "0%", rotation: 0,
+                    duration: 1.5,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: text.closest('.reveal-mask'),
+                        start: "top 95%",
+                        toggleActions: "play none none reverse"
+                    },
+                    delay: i < 5 ? i * 0.1 : 0 // Only stagger initial hero elements
+                });
+            });
+        };
+        setTimeout(initReveals, 300);
+
+        // 5. Advanced Jelly Scroll & Multi-Axis Parallax
+        let parallaxTweens = [];
+        let proxy = { skew: 0 };
+        let skewSetter = gsap.quickSetter(".jelly-element", "skewY", "deg");
+        
+        window.initParallaxScrolls = function() {
+            parallaxTweens.forEach(t => t.kill());
+            parallaxTweens = [];
+            
+            // Re-bind velocity skew
+            ScrollTrigger.create({
+                onUpdate: (self) => {
+                    let skew = gsap.utils.clamp(-6, 6, self.getVelocity() / -200); 
+                    if (Math.abs(skew) > Math.abs(proxy.skew)) {
+                        proxy.skew = skew;
+                        gsap.to(proxy, { skew: 0, duration: 1.0, ease: "power3.out", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
+                    }
+                }
+            });
+
+            // Multi-Axis elements
+            document.querySelectorAll('.ag-element').forEach(el => {
+                const speedY = parseFloat(el.getAttribute('data-speed-y')) || 0;
+                const speedX = parseFloat(el.getAttribute('data-speed-x')) || 0;
+                const speedR = parseFloat(el.getAttribute('data-speed-r')) || 0;
+                
+                const multi = window.innerWidth < 768 ? 150 : 300; 
+
+                const tween = gsap.fromTo(el, 
+                    { y: speedY * multi, x: speedX * multi, rotation: speedR * -20 },
+                    {
+                        y: -speedY * multi, x: -speedX * multi, rotation: speedR * 20,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: el.closest('.section') || el,
+                            start: "top 120%", end: "bottom -20%",
+                            scrub: 1.5, // 1.5 scrub creates heavy, buttery smooth dragging
+                            invalidateOnRefresh: true
+                        }
+                    }
+                );
+                parallaxTweens.push(tween);
+            });
+
+            // Internal Image Parallax for Cards
+            document.querySelectorAll('.parallax-img').forEach(img => {
+                const tween = gsap.to(img, {
+                    yPercent: -20, // Moves image up inside container while scrolling down
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img.closest('.ag-element'),
+                        start: "top bottom", end: "bottom top", scrub: true
+                    }
+                });
+                parallaxTweens.push(tween);
+            });
+        };
+        setTimeout(initParallaxScrolls, 500);
+
+        // 6. Horizontal Projects Scroll (Desktop)
+        let horizontalScrollTween;
+        window.initHorizontalScroll = function() {
+            const wrapper = document.querySelector('.projects-wrapper');
+            if(!wrapper) return;
+            if(horizontalScrollTween) horizontalScrollTween.kill();
+            let mm = gsap.matchMedia();
+            mm.add("(min-width: 768px)", () => {
+                horizontalScrollTween = gsap.to(wrapper, {
+                    x: () => -(wrapper.scrollWidth - window.innerWidth + 100) + "px",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#projects", start: "top top", end: () => "+=" + wrapper.scrollWidth,
+                        pin: true, scrub: 1.5, invalidateOnRefresh: true
+                    }
+                });
+            });
+        }
+
+        // Navbar blur behavior
+        const navbar = document.getElementById('navbar');
+        ScrollTrigger.create({
+            start: 'top -50', end: 99999,
+            toggleClass: {className: 'bg-dark/80 backdrop-blur-xl border-b border-white/10', targets: navbar},
+            onUpdate: (self) => {
+                if(self.direction === 1 && self.scrollY > 150) {
+                    gsap.to(navbar, { yPercent: -100, duration: 0.5, ease: "power3.out" });
+                } else {
+                    gsap.to(navbar, { yPercent: 0, duration: 0.5, ease: "power3.out" });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+```
