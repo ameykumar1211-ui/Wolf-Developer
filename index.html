@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wolf Developer | Elite Digital Agency</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis for Buttery Smooth Scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Syncopate', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#020202',
+                        surface: '#0a0a0c',
+                        card: '#111114',
+                        // Replaced yellow with a highly visible Neon Cyan
+                        wolfAccent: '#00e5ff', 
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.3, transform: 'scale(1)' },
+                            '50%': { opacity: 0.6, transform: 'scale(1.1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; color: #fff; }
+        
+        /* Buttery Smooth Custom Scrollbar */
+        .app-scroll::-webkit-scrollbar { width: 0px; background: transparent; }
+        .app-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        
+        /* Glassmorphism & UI Elements */
+        .glass-nav {
+            background: rgba(2, 2, 2, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Enhanced Luxury Card with darker background for readability over bright orange */
+        .luxury-card {
+            background: linear-gradient(180deg, rgba(0, 229, 255, 0.05) 0%, rgba(10, 10, 12, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .luxury-card:hover {
+            border-color: rgba(0, 229, 255, 0.5); /* Cyan glow */
+            box-shadow: 0 15px 50px -10px rgba(0, 229, 255, 0.2);
+            transform: translateY(-8px) scale(1.01);
+            background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, rgba(10, 10, 12, 0.95) 100%);
+        }
+
+        /* High-End Scroll Reveal Animations (Handled by GSAP) */
+        .reveal { opacity: 0; visibility: hidden; }
+        
+        /* View Transitions */
+        .view-section { display: none; opacity: 0; transition: opacity 0.6s ease; }
+        .view-section.active { display: flex; opacity: 1; }
+
+        /* Premium Inputs */
+        .premium-input {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .premium-input:focus {
+            background: rgba(0,0,0,0.8);
+            border-color: #00e5ff;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Text Gradients */
+        .text-gradient-blue { background: linear-gradient(to right, #60a5fa, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .text-gradient-cyan { background: linear-gradient(to right, #a5f3fc, #00e5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Lag-Proofing: Hardware Acceleration for moving background */
+        .code-component {
+            will-change: transform;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+
+    <!-- Premium Device Container -->
+    <div class="relative w-full h-[100dvh] sm:h-[90vh] sm:max-h-[900px] sm:aspect-[9/16] bg-black sm:rounded-[3rem] sm:border-[6px] sm:border-[#0a0a0a] shadow-[0_0_120px_rgba(0,229,255,0.15)] overflow-hidden flex flex-col">
+        
+        <!-- Animated HTML Code Matrix Background (Optimized for 0 lag) -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-black">
+            <!-- Static Glows (Animations removed to prevent heavy GPU recalculations while scrolling) -->
+            <div class="absolute -top-[15%] -left-[20%] w-[80%] h-[50%] bg-wolfAccent/10 rounded-full blur-[120px]"></div>
+            <div class="absolute top-[40%] -right-[30%] w-[70%] h-[60%] bg-wolfAccent/10 rounded-full blur-[140px]"></div>
+            <div class="absolute -bottom-[20%] left-[5%] w-[90%] h-[50%] bg-wolfAccent/10 rounded-full blur-[120px]"></div>
+            
+            <!-- 3D Cyber-Wolf Background Element -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-[1]" style="perspective: 1200px;">
+                <div class="parallax-wolf w-[150vw] sm:w-[900px] h-auto opacity-60 mix-blend-screen will-change-transform" style="transform-style: preserve-3d;">
+                    <!-- Using the custom provided image. mix-blend-screen removes the black background naturally -->
+                    <img src="ChatGPT Image Jul 24, 2026, 12_32_08 PM.png" alt="3D Blue Wolf Background" class="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(0,191,255,0.6)]">
+                </div>
+            </div>
+
+            <!-- Code Components Space Matrix Container -->
+            <div id="code-matrix" class="absolute inset-0 w-full h-[500vh] pointer-events-none overflow-hidden select-none">
+            </div>
+        </div>
+
+        <!-- Scrollable Area -->
+        <div class="app-scroll overflow-y-auto overflow-x-hidden flex-grow flex flex-col w-full relative z-10" id="scroll-container">
+            <div id="lenis-content" class="flex flex-col flex-grow">
+
+                <!-- Luxury Navigation -->
+                <nav class="glass-nav sticky top-0 z-50">
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center cursor-pointer group" onclick="showView('home-view')">
+                            <!-- THE EXACT IMAGE NAME REQUESTED -->
+                            <div class="relative w-11 h-11 mr-4 rounded-full overflow-hidden border border-white/10 shadow-[0_0_20px_rgba(0,229,255,0.2)] group-hover:border-wolfAccent transition-all duration-700">
+                                <img src="1000837367.jpg" alt="Wolf Logo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none'">
+                            </div>
+                            <span class="text-white font-display font-bold text-[12px] tracking-[0.3em] uppercase group-hover:text-wolfAccent transition-colors duration-500">Wolf</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="showView('admin-login-view')" class="text-zinc-300 drop-shadow-md hover:text-wolfAccent p-2 rounded-full hover:bg-white/10 transition-all duration-300 transform hover:rotate-90">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- ============================== -->
+                <!-- MAIN HOME VIEW -->
+                <!-- ============================== -->
+                <main id="home-view" class="view-section active flex-col">
+                    
+                    <!-- Cinematic Hero Section -->
+                    <section class="relative px-6 pt-24 pb-20 flex flex-col items-center justify-center min-h-[75vh]">
+                        <div class="award-winning text-center w-full">
+                            <div class="inline-flex items-center gap-2 border border-wolfAccent/30 bg-black/40 px-5 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-8 text-white backdrop-blur-md shadow-[0_0_20px_rgba(0,229,255,0.2)]">
+                                <span class="w-2 h-2 rounded-full bg-wolfAccent animate-pulse"></span>
+                                The Apex of Development
+                            </div>
+                            <h1 class="hero-title text-5xl md:text-6xl font-display font-bold tracking-tighter mb-6 leading-[1.1] uppercase drop-shadow-2xl">
+                                <span class="text-white">Rule The</span><br>
+                                <span class="text-gradient-cyan">Digital</span> <span class="text-gradient-blue">Era</span>
+                            </h1>
+                            <div class="bg-black/40 backdrop-blur-md p-4 rounded-2xl mb-12 max-w-sm mx-auto border border-white/5">
+                                <p class="text-[13px] text-zinc-300 leading-relaxed font-light drop-shadow-md">
+                                    We don't just write code. We forge high-performance, visually stunning web and app architectures designed to dominate the market.
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-4 w-full max-w-xs mx-auto relative z-20">
+                                <button onclick="scrollToSection('contact-section')" class="relative group overflow-hidden w-full bg-wolfAccent text-black font-bold py-4 rounded-xl shadow-[0_0_30px_rgba(0,229,255,0.4)] hover:shadow-[0_0_50px_rgba(0,229,255,0.6)] hover:-translate-y-1 transition-all duration-500">
+                                    <span class="relative z-10 uppercase tracking-[0.2em] text-[11px] font-black">Initiate Project</span>
+                                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                                </button>
+                                <button onclick="scrollToSection('portfolio-section')" class="w-full bg-black/60 text-white font-bold py-4 rounded-xl border border-white/20 hover:border-wolfAccent hover:bg-wolfAccent/10 hover:text-wolfAccent transition-all duration-500 uppercase tracking-[0.2em] text-[11px] backdrop-blur-md">
+                                    View Architecture
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Philosophy / Extender -->
+                    <section class="py-24 px-6 relative border-t border-white/10">
+                        <div class="reveal mb-8">
+                            <h2 class="text-3xl font-display font-bold text-white uppercase tracking-tight parallax-title drop-shadow-lg">Our Ethos</h2>
+                            <div class="w-16 h-1 bg-gradient-to-r from-wolfAccent to-blue-500 mt-4 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.5)]"></div>
+                        </div>
+                        <div class="slide-left reveal-delay-1 luxury-card p-6 rounded-[2rem]">
+                            <p class="text-[17px] text-white font-light leading-relaxed mb-6 border-l-2 border-wolfAccent pl-4 drop-shadow-md">
+                                "In a sea of templates, we are the architects of the bespoke. We believe that true digital luxury is the perfect intersection of raw speed and breathtaking aesthetics."
+                            </p>
+                            <p class="text-[13px] text-zinc-300 font-light leading-relaxed drop-shadow-sm">
+                                Every pixel we place and every function we write is tailored to elevate your brand above the noise. We build for the bold. Your digital presence should be an undeniable force.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- DYNAMIC PORTFOLIO SECTION -->
+                    <section id="portfolio-section" class="py-24 px-6 relative border-t border-white/10">
+                        <div class="absolute right-0 top-20 w-64 h-64 bg-wolfAccent/10 rounded-full blur-[100px] pointer-events-none parallax-blob"></div>
+                        
+                        <div class="reveal mb-12 flex items-end justify-between relative z-10 bg-black/50 backdrop-blur-md p-4 rounded-2xl border border-white/5">
+                            <div>
+                                <p class="text-[10px] text-wolfAccent font-bold tracking-[0.2em] uppercase mb-2 drop-shadow-md">The Archive</p>
+                                <h2 class="text-3xl font-display font-bold text-white uppercase tracking-tight parallax-title drop-shadow-lg">Latest Work</h2>
+                            </div>
+                            <div class="w-10 h-10 rounded-full border border-wolfAccent/50 flex items-center justify-center animate-pulse-glow bg-wolfAccent/10 shrink-0">
+                                <div class="w-2.5 h-2.5 bg-wolfAccent rounded-full shadow-[0_0_10px_#00e5ff]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Client Facing Portfolio Container -->
+                        <div id="client-portfolio-list" class="space-y-6 relative z-10">
+                            <!-- Handled by Firebase/JS -->
+                            <div class="text-center py-16 opacity-50 luxury-card rounded-3xl border-dashed border-white/20">
+                                <div class="w-8 h-8 border-2 border-wolfAccent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                <p class="text-[10px] uppercase tracking-widest text-zinc-300 font-bold drop-shadow-md">Syncing Archives...</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tech Stack Section -->
+                    <section class="py-20 px-6 border-y border-white/10 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 pointer-events-none"></div>
+                        <div class="reveal text-center mb-10 relative z-10 bg-black/50 backdrop-blur-md p-4 rounded-2xl border border-white/5 inline-block mx-auto max-w-fit flex flex-col items-center">
+                            <p class="text-[10px] text-wolfAccent font-bold tracking-[0.2em] uppercase mb-2 drop-shadow-md">Foundation</p>
+                            <h2 class="text-2xl font-display font-bold text-white uppercase tracking-tight parallax-title drop-shadow-lg">Tech Stack</h2>
+                        </div>
+                        <div class="tech-stack-container flex flex-wrap justify-center gap-3 relative z-10">
+                            <div class="award-winning luxury-card px-5 py-3 rounded-full text-xs font-bold text-zinc-100 tracking-wider shadow-lg">React & Next.js</div>
+                            <div class="award-winning reveal-delay-1 luxury-card px-5 py-3 rounded-full text-xs font-bold text-zinc-100 tracking-wider shadow-lg">Node & Python</div>
+                            <div class="award-winning reveal-delay-2 luxury-card px-5 py-3 rounded-full text-xs font-bold text-zinc-100 tracking-wider shadow-lg">Firebase Cloud</div>
+                            <div class="award-winning luxury-card px-5 py-3 rounded-full text-xs font-bold text-zinc-100 tracking-wider shadow-lg">AWS & Vercel</div>
+                            <div class="award-winning reveal-delay-1 luxury-card px-5 py-3 rounded-full text-xs font-bold text-zinc-100 tracking-wider shadow-lg">Swift & Kotlin</div>
+                        </div>
+                    </section>
+
+                    <!-- Services Section -->
+                    <section id="services-section" class="py-24 px-6 relative">
+                        <div class="absolute left-[-20%] top-[30%] w-80 h-80 bg-wolfAccent/10 rounded-full blur-[120px] pointer-events-none parallax-blob"></div>
+
+                        <div class="reveal mb-16 text-center relative z-10 bg-black/50 backdrop-blur-md p-4 rounded-2xl border border-white/5 inline-block mx-auto max-w-fit flex flex-col items-center">
+                            <p class="text-[10px] text-wolfAccent font-bold tracking-[0.2em] uppercase mb-2 drop-shadow-md">Arsenal</p>
+                            <h2 class="text-3xl font-display font-bold text-white uppercase tracking-tight parallax-title drop-shadow-lg">Capabilities</h2>
+                        </div>
+
+                        <div class="space-y-6 relative z-10">
+                            <!-- Service 1 -->
+                            <div class="slide-left luxury-card p-8 rounded-[2rem] group service-card">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-14 h-14 bg-black/80 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:border-wolfAccent group-hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all shrink-0">
+                                        <span class="text-wolfAccent font-display font-bold text-lg drop-shadow-md">01</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-xl mb-3 tracking-wide drop-shadow-md">Web Architecture</h3>
+                                        <p class="text-[13px] text-zinc-300 font-light leading-relaxed">Fluid, high-performance websites engineered from the ground up to dominate search rankings and convert traffic at elite levels.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Service 2 -->
+                            <div class="slide-right luxury-card p-8 rounded-[2rem] group service-card">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-14 h-14 bg-black/80 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:border-wolfAccent group-hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all shrink-0">
+                                        <span class="text-wolfAccent font-display font-bold text-lg drop-shadow-md">02</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-xl mb-3 tracking-wide drop-shadow-md">App Ecosystems</h3>
+                                        <p class="text-[13px] text-zinc-300 font-light leading-relaxed">Native-grade iOS and Android mobile applications built with complex, unbreakable state management and buttery UI.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Service 3 -->
+                            <div class="slide-left luxury-card p-8 rounded-[2rem] group service-card">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-14 h-14 bg-black/80 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:border-wolfAccent group-hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all shrink-0">
+                                        <span class="text-wolfAccent font-display font-bold text-lg drop-shadow-md">03</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-xl mb-3 tracking-wide drop-shadow-md">Custom Backend</h3>
+                                        <p class="text-[13px] text-zinc-300 font-light leading-relaxed">Military-grade server architectures, custom API integrations, and ultra-secure database management for limitless scaling.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Process Section -->
+                    <section class="py-24 px-6 relative border-y border-white/10">
+                        <div class="reveal mb-16 text-center bg-black/50 backdrop-blur-md p-4 rounded-2xl border border-white/5 inline-block mx-auto max-w-fit flex flex-col items-center">
+                            <p class="text-[10px] text-wolfAccent font-bold tracking-[0.2em] uppercase mb-2 drop-shadow-md">Methodology</p>
+                            <h2 class="text-3xl font-display font-bold text-white uppercase tracking-tight parallax-title drop-shadow-lg">The Wolf Process</h2>
+                        </div>
+
+                        <div class="space-y-12 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px before:h-full before:w-px before:bg-gradient-to-b before:from-wolfAccent before:via-wolfAccent before:to-transparent process-container">
+                            
+                            <div class="slide-left relative flex items-start group process-step">
+                                <div class="w-8 h-8 rounded-full bg-black border-2 border-wolfAccent flex items-center justify-center shrink-0 relative z-10 group-hover:scale-125 transition-transform duration-500 shadow-lg shadow-black">
+                                    <div class="w-2 h-2 bg-wolfAccent rounded-full shadow-[0_0_10px_#00e5ff]"></div>
+                                </div>
+                                <div class="ml-8 pt-1 luxury-card p-5 rounded-2xl w-full">
+                                    <h3 class="font-bold text-white text-sm mb-2 uppercase tracking-widest text-wolfAccent drop-shadow-md">1. Discovery</h3>
+                                    <p class="text-xs text-zinc-300 font-light leading-relaxed">We extract your vision, analyze competitors, and forge an unbreakable strategy.</p>
+                                </div>
+                            </div>
+
+                            <div class="slide-right relative flex items-start group process-step">
+                                <div class="w-8 h-8 rounded-full bg-black border-2 border-white/30 flex items-center justify-center shrink-0 relative z-10 group-hover:scale-125 group-hover:border-wolfAccent transition-all duration-500 shadow-lg shadow-black">
+                                    <div class="w-2 h-2 bg-transparent rounded-full group-hover:bg-wolfAccent group-hover:shadow-[0_0_10px_#00e5ff]"></div>
+                                </div>
+                                <div class="ml-8 pt-1 luxury-card p-5 rounded-2xl w-full">
+                                    <h3 class="font-bold text-white text-sm mb-2 uppercase tracking-widest text-wolfAccent drop-shadow-md">2. UX/UI Forge</h3>
+                                    <p class="text-xs text-zinc-300 font-light leading-relaxed">Designing psychological interfaces meant to captivate users and enforce superiority.</p>
+                                </div>
+                            </div>
+
+                            <div class="slide-left relative flex items-start group process-step">
+                                <div class="w-8 h-8 rounded-full bg-black border-2 border-white/30 flex items-center justify-center shrink-0 relative z-10 group-hover:scale-125 group-hover:border-wolfAccent transition-all duration-500 shadow-lg shadow-black">
+                                    <div class="w-2 h-2 bg-transparent rounded-full group-hover:bg-wolfAccent group-hover:shadow-[0_0_10px_#00e5ff]"></div>
+                                </div>
+                                <div class="ml-8 pt-1 luxury-card p-5 rounded-2xl w-full">
+                                    <h3 class="font-bold text-white text-sm mb-2 uppercase tracking-widest text-wolfAccent drop-shadow-md">3. Code & Build</h3>
+                                    <p class="text-xs text-zinc-300 font-light leading-relaxed">Our developers build the raw engine, optimizing every line for infinite scale.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Contact Form Section -->
+                    <section id="contact-section" class="py-24 px-6 relative z-10">
+                        <div class="reveal text-center mb-12 bg-black/50 backdrop-blur-md p-6 rounded-2xl border border-white/5 inline-block mx-auto max-w-fit flex flex-col items-center shadow-2xl">
+                            <h2 class="text-4xl font-display font-bold text-white mb-2 uppercase tracking-tighter drop-shadow-xl parallax-title">Initiate.</h2>
+                            <p class="text-[10px] text-wolfAccent uppercase tracking-[0.3em] font-bold drop-shadow-md">Secure Your Empire</p>
+                        </div>
+
+                        <!-- Status Messages -->
+                        <div id="success-message" class="hidden luxury-card border-green-500/50 p-6 rounded-2xl mb-8 text-center bg-green-500/10">
+                            <div class="font-display font-bold text-white text-lg mb-1 uppercase text-green-400">Transmission Secured</div>
+                            <p class="text-xs text-zinc-300">The Wolf pack will establish contact shortly.</p>
+                        </div>
+                        <div id="form-error" class="hidden luxury-card border-red-500/50 p-6 rounded-2xl mb-8 text-center bg-red-500/10">
+                            <div class="font-display font-bold text-red-400 text-lg mb-1 uppercase">Link Failed</div>
+                            <p class="text-xs text-zinc-300">Check network parameters.</p>
+                        </div>
+
+                        <!-- Form -->
+                        <div class="reveal luxury-card p-6 sm:p-8 rounded-[2rem] relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-wolfAccent to-blue-500"></div>
+                            <form id="client-form" onsubmit="handleClientSubmit(event)" class="space-y-6 mt-3">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-zinc-300 uppercase tracking-[0.2em] mb-2 drop-shadow-md">Project Code Name *</label>
+                                    <input type="text" id="projectName" required class="w-full premium-input rounded-xl px-5 py-4 text-sm focus:outline-none placeholder-zinc-500" placeholder="e.g. Project Apollo">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-[9px] font-bold text-zinc-300 uppercase tracking-[0.2em] mb-2 drop-shadow-md">Comms (Phone) *</label>
+                                        <input type="tel" id="phone" required class="w-full premium-input rounded-xl px-5 py-4 text-sm focus:outline-none placeholder-zinc-500" placeholder="+91 000 000">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9px] font-bold text-zinc-300 uppercase tracking-[0.2em] mb-2 drop-shadow-md">WhatsApp</label>
+                                        <input type="tel" id="whatsapp" class="w-full premium-input rounded-xl px-5 py-4 text-sm focus:outline-none placeholder-zinc-500" placeholder="Optional">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[9px] font-bold text-zinc-300 uppercase tracking-[0.2em] mb-2 drop-shadow-md">Architecture Details *</label>
+                                    <textarea id="requirements" rows="4" required class="w-full premium-input rounded-xl px-5 py-4 text-sm focus:outline-none placeholder-zinc-500 resize-none" placeholder="Outline your complete vision..."></textarea>
+                                </div>
+
+                                <button type="submit" id="submit-btn" class="w-full bg-wolfAccent text-black font-display font-bold uppercase tracking-[0.3em] py-5 rounded-xl shadow-[0_0_20px_rgba(0,229,255,0.4)] mt-6 text-[11px] hover:shadow-[0_0_40px_rgba(0,229,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300">
+                                    Conform
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <footer class="py-16 px-6 text-center mt-auto border-t border-white/10 relative z-10 bg-black/60 backdrop-blur-md">
+                        <img src="1000837367.jpg" alt="Wolf Logo" class="w-16 h-16 mx-auto rounded-full mb-6 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500 shadow-lg shadow-black" onerror="this.style.display='none'">
+                        <p class="text-white text-[11px] font-bold tracking-[0.3em] uppercase mb-2 drop-shadow-md">&copy; 2026 Wolf Developer</p>
+                        <p class="text-zinc-400 text-[9px] uppercase tracking-[0.2em] font-light">Architects of the digital realm.</p>
+                    </footer>
+                </main>
+
+
+                <!-- ============================== -->
+                <!-- ADMIN LOGIN VIEW -->
+                <!-- ============================== -->
+                <main id="admin-login-view" class="view-section flex-grow items-center justify-center p-6 relative">
+                    
+                    <div class="w-full max-w-sm luxury-card rounded-[2.5rem] p-8 text-center relative z-10 animate-fade-in-up border border-wolfAccent/30 shadow-[0_0_50px_rgba(0,229,255,0.2)] bg-black/70 backdrop-blur-xl">
+                        <div class="mb-10">
+                            <div class="relative inline-block">
+                                <img src="1000837367.jpg" alt="Wolf Logo" class="relative w-24 h-24 rounded-full border-2 border-white/10 shadow-2xl object-cover mx-auto bg-black p-0.5" onerror="this.style.display='none'">
+                                <div class="absolute bottom-1 right-1 w-5 h-5 bg-wolfAccent border-[3px] border-black rounded-full shadow-[0_0_15px_#00e5ff]"></div>
+                            </div>
+                            <h2 class="text-3xl font-display font-bold text-white mt-6 tracking-tight uppercase drop-shadow-md">Mainframe</h2>
+                            <p class="text-[10px] text-zinc-300 mt-2 uppercase tracking-[0.4em] font-bold drop-shadow-sm">Authorized Access Only</p>
+                        </div>
+
+                        <div id="login-error" class="hidden bg-red-500/20 border border-red-500/50 text-red-400 p-4 rounded-xl mb-6 text-[10px] uppercase tracking-[0.2em] font-bold">
+                            Access Denied.
+                        </div>
+
+                        <form onsubmit="handleAdminLogin(event)" class="space-y-6 text-left">
+                            <div>
+                                <input type="password" id="admin-password" required class="w-full premium-input rounded-xl px-5 py-4 text-center text-sm text-wolfAccent outline-none tracking-[0.5em] placeholder-zinc-500 placeholder:tracking-normal font-mono bg-black/60" placeholder="ENTER CODE">
+                            </div>
+                            <button type="submit" class="w-full bg-wolfAccent text-black font-display font-bold uppercase tracking-[0.3em] py-4 rounded-xl text-[11px] shadow-[0_0_20px_rgba(0,229,255,0.4)] hover:shadow-[0_0_40px_rgba(0,229,255,0.6)] active:scale-95 transition-all">
+                                Authenticate
+                            </button>
+                            <button type="button" onclick="showView('home-view')" class="w-full text-zinc-300 font-bold py-3 rounded-xl text-[10px] uppercase tracking-widest hover:text-white transition-colors bg-black/40 border border-white/10">
+                                Abort Sequence
+                            </button>
+                        </form>
+                    </div>
+                </main>
+
+
+                <!-- ============================== -->
+                <!-- ADMIN DASHBOARD VIEW -->
+                <!-- ============================== -->
+                <main id="admin-panel-view" class="view-section flex-grow flex-col p-6 min-h-[100dvh]">
+                    
+                    <div class="luxury-card p-6 sm:p-10 rounded-[2rem] border-white/10 shadow-2xl flex-grow flex flex-col">
+                        <!-- Admin Header -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 pb-5 border-b border-white/10 animate-fade-in-up gap-4">
+                            <div class="bg-black/50 backdrop-blur-md p-3 rounded-xl border border-white/5">
+                                <h1 class="text-3xl font-display font-bold text-white uppercase tracking-tight drop-shadow-md">Nexus</h1>
+                                <p class="text-[10px] text-wolfAccent uppercase tracking-[0.3em] font-bold mt-1 drop-shadow-sm">Command Center</p>
+                            </div>
+                            <button onclick="logoutAdmin()" class="bg-red-500/20 text-red-300 px-5 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold border border-red-500/30 hover:bg-red-500/40 hover:text-white active:scale-95 transition-all backdrop-blur-md">
+                                Lock System
+                            </button>
+                        </div>
+
+                        <!-- Premium Admin Tabs -->
+                        <div class="flex gap-2 mb-8 bg-black/60 p-1.5 rounded-xl border border-white/10 animate-fade-in-up backdrop-blur-md">
+                            <button onclick="switchAdminTab('requests')" id="tab-req" class="flex-1 py-3 text-[10px] uppercase tracking-[0.2em] font-bold text-black bg-wolfAccent rounded-lg transition-all shadow-[0_0_15px_rgba(0,229,255,0.4)]">Client Requests</button>
+                            <button onclick="switchAdminTab('portfolio')" id="tab-port" class="flex-1 py-3 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-300 bg-transparent rounded-lg hover:text-white transition-all">Manage Portfolio</button>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loading-state" class="py-24 text-center flex flex-col items-center hidden">
+                            <div class="w-10 h-10 border-2 border-white/20 border-t-wolfAccent rounded-full animate-spin mb-5"></div>
+                            <p class="text-white text-[10px] font-bold tracking-[0.4em] uppercase animate-pulse drop-shadow-md">Syncing Database...</p>
+                        </div>
+
+                        <!-- TAB 1: CLIENT REQUESTS -->
+                        <div id="admin-reqs-view" class="space-y-4 pb-10 flex-grow">
+                            <div id="submissions-list" class="space-y-6"></div>
+                            
+                            <div id="empty-state" class="hidden py-20 text-center flex flex-col items-center">
+                                <div class="w-16 h-16 bg-black/70 rounded-full flex items-center justify-center mb-5 border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] backdrop-blur-md">
+                                    <svg class="w-6 h-6 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                </div>
+                                <p class="text-white text-sm font-bold tracking-widest uppercase drop-shadow-md">Signal Empty</p>
+                                <p class="text-[10px] text-zinc-300 mt-2 font-light drop-shadow-sm">Awaiting incoming transmissions.</p>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: MANAGE PORTFOLIO -->
+                        <div id="admin-port-view" class="hidden space-y-8 pb-10 flex-grow">
+                            
+                            <!-- Add New Work Form -->
+                            <div class="bg-black/50 p-6 sm:p-8 rounded-[2rem] border border-wolfAccent/30 relative overflow-hidden shadow-[0_0_40px_rgba(0,229,255,0.15)] backdrop-blur-md">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-wolfAccent to-transparent"></div>
+                                <h3 class="text-sm font-display font-bold text-white uppercase tracking-widest mb-6 drop-shadow-md">Publish Work</h3>
+                                
+                                <form onsubmit="handleWorkSubmit(event)" class="space-y-5">
+                                    <div>
+                                        <input type="text" id="workName" required class="w-full premium-input rounded-xl px-5 py-4 text-sm outline-none placeholder-zinc-400" placeholder="Project Title">
+                                    </div>
+                                    <div>
+                                        <input type="url" id="workLink" required class="w-full premium-input rounded-xl px-5 py-4 text-sm outline-none placeholder-zinc-400" placeholder="Live URL (https://...)">
+                                    </div>
+                                    <div>
+                                        <textarea id="workDesc" rows="3" required class="w-full premium-input rounded-xl px-5 py-4 text-sm outline-none placeholder-zinc-400 resize-none" placeholder="Brief project description to display to clients..."></textarea>
+                                    </div>
+                                    <button type="submit" id="add-work-btn" class="w-full bg-wolfAccent text-black font-bold uppercase tracking-[0.3em] py-4 rounded-xl text-[10px] shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_40px_rgba(0,229,255,0.6)] transition-all">
+                                        Deploy to Home Page
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- List of Works -->
+                            <div class="bg-black/70 p-6 rounded-[2rem] border border-white/10 backdrop-blur-md">
+                                <h3 class="text-[11px] font-bold text-zinc-300 uppercase tracking-[0.2em] mb-6 border-b border-white/20 pb-4 drop-shadow-sm">Active Portfolio Database</h3>
+                                <div id="admin-portfolio-list" class="space-y-4">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Interaction Scripts -->
+    <script>
+        // Initialize GSAP and ScrollTrigger for Anti-Gravity / Buttery Smooth Scrolling
+        gsap.registerPlugin(ScrollTrigger);
+
+        let lenis;
+
+        function initAnimations() {
+            // Setup Lenis for Smooth Scrolling
+            const scrollContainer = document.getElementById('scroll-container');
+            
+            lenis = new Lenis({
+                wrapper: scrollContainer,
+                content: document.getElementById('lenis-content'),
+                lerp: 0.1, // Slightly faster interpolation for snappier scrolling
+                smoothWheel: true,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // Tell ScrollTrigger to listen to our custom scroll container
+            ScrollTrigger.defaults({
+                scroller: "#scroll-container"
+            });
+
+            // 0. PERFORMANCE OPTIMIZED Code Matrix Background Animation
+            const codeMatrix = document.getElementById('code-matrix');
+            if (codeMatrix) {
+                const codeSnippets = [
+                    '&lt;div class="container"&gt;',
+                    'function initialize() {',
+                    'const root = createRoot();',
+                    '&lt;h1 class="font-bold"&gt;WOLF&lt;/h1&gt;',
+                    'import { useRef, useEffect } from "react";',
+                    'display: flex;',
+                    'justify-content: space-between;',
+                    '&lt;App /&gt;',
+                    'return &lt;section&gt;Ready&lt;/section&gt;;',
+                    'const architecture = {};',
+                    'body { overflow: hidden; }',
+                    '&lt;canvas id="webgl"&gt;&lt;/canvas&gt;',
+                    'async function fetchData() {',
+                    'export default SystemConfig;',
+                    '&lt;/div&gt;',
+                    'await server.start();',
+                    '&lt;main id="content"&gt;',
+                    'console.log("Apex Reached");',
+                    'const speed = 60fps;'
+                ];
+                
+                // Balanced count for a satisfying, un-cluttered aesthetic
+                for(let i=0; i<50; i++) { 
+                    const chunk = document.createElement('div');
+                    
+                    // Mix of amber and orange for rich visual texture and depth
+                    const colors = ['text-orange-500', 'text-amber-500', 'text-orange-600'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    chunk.className = `absolute ${randomColor} font-mono font-black whitespace-pre code-component select-none pointer-events-none`;
+                    
+                    const scale = 1 + Math.random() * 2; 
+                    const left = -10 + Math.random() * 100;
+                    const top = -20 + Math.random() * 200; // Expanded range so elements keep coming from the bottom
+                    
+                    chunk.style.left = `${left}%`;
+                    chunk.style.top = `${top}%`;
+                    chunk.style.transform = `scale(${scale}) rotate(${Math.random() * 15 - 7.5}deg)`;
+                    chunk.style.fontSize = `${2 + Math.random() * 3}rem`; 
+                    chunk.style.opacity = (0.10 + Math.random() * 0.15).toFixed(2); // Varied opacity (10% to 25%) for clear visibility + depth
+                    
+                    chunk.innerHTML = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                    codeMatrix.appendChild(chunk);
+                }
+
+                // FASTER PARALLAX: Increased multiplier so components move faster per scroll
+                gsap.utils.toArray('.code-component').forEach(chunk => {
+                    const depth = 1 + Math.random() * 2; 
+                    gsap.to(chunk, {
+                        yPercent: -1200 * depth, // Drastically increased distance for faster scrolling
+                        rotation: "+=25", 
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: "#lenis-content",
+                            start: "top top",
+                            end: "bottom bottom",
+                            scrub: 0.2 // Lowered scrub to respond faster to user scroll
+                        }
+                    });
+                });
+            }
+
+            // 0.5 3D Wolf Parallax Animation
+            const wolf = document.querySelector('.parallax-wolf');
+            if (wolf) {
+                // Scroll-based 3D transformation (FAST & AGGRESSIVE)
+                gsap.to(wolf, {
+                    yPercent: -150, // Much faster vertical movement
+                    rotationX: 45, // Deep 3D tilt back
+                    rotationY: 25, // Panning to the side
+                    rotationZ: -10,
+                    scale: 1.4, // Zooms in slightly while scrolling fast
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#lenis-content",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 0.3 // Very snappy and fast reaction to scroll
+                    }
+                });
+                
+                // Continuous ambient 3D hovering (runs even when not scrolling)
+                gsap.to(wolf, {
+                    y: "+=40",
+                    rotationX: "+=8",
+                    rotationY: "-=8",
+                    duration: 4,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+
+            // 1. Anti-Gravity Floating Reveal for all '.reveal' elements
+            gsap.utils.toArray('.reveal').forEach((el) => {
+                let delay = 0;
+                if(el.classList.contains('reveal-delay-1')) delay = 0.15;
+                if(el.classList.contains('reveal-delay-2')) delay = 0.30;
+                if(el.classList.contains('reveal-delay-3')) delay = 0.45;
+
+                gsap.fromTo(el, 
+                    { 
+                        y: 120, 
+                        opacity: 0, 
+                        scale: 0.95,
+                        autoAlpha: 0 
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        scale: 1,
+                        autoAlpha: 1,
+                        duration: 1.6,
+                        delay: delay,
+                        ease: "expo.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 90%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // 1.5 Slide In from Sides
+            gsap.utils.toArray('.slide-left, .slide-right').forEach((el) => {
+                let delay = 0;
+                if(el.classList.contains('reveal-delay-1')) delay = 0.15;
+                if(el.classList.contains('reveal-delay-2')) delay = 0.30;
+                if(el.classList.contains('reveal-delay-3')) delay = 0.45;
+
+                const isLeft = el.classList.contains('slide-left');
+
+                gsap.fromTo(el, 
+                    { x: isLeft ? -100 : 100, opacity: 0, autoAlpha: 0 },
+                    { 
+                        x: 0, opacity: 1, autoAlpha: 1, 
+                        duration: 1.2, delay: delay, ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: el, start: "top 85%", toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // 1.6 Award-Winning 3D Blur Reveal
+            gsap.utils.toArray('.award-winning').forEach((el) => {
+                let delay = 0;
+                if(el.classList.contains('reveal-delay-1')) delay = 0.15;
+                if(el.classList.contains('reveal-delay-2')) delay = 0.30;
+                if(el.classList.contains('reveal-delay-3')) delay = 0.45;
+
+                gsap.fromTo(el,
+                    { 
+                        opacity: 0, 
+                        y: 80, 
+                        scale: 0.9, 
+                        filter: "blur(15px)", 
+                        rotationX: -15 
+                    },
+                    {
+                        opacity: 1, 
+                        y: 0, 
+                        scale: 1, 
+                        filter: "blur(0px)", 
+                        rotationX: 0, 
+                        duration: 1.8, 
+                        delay: delay,
+                        ease: "power4.out",
+                        scrollTrigger: {
+                            trigger: el, 
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // 2. Parallax Titles
+            gsap.utils.toArray('.parallax-title').forEach(title => {
+                gsap.fromTo(title, 
+                    { x: -30 },
+                    { 
+                        x: 10,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: title,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: 1
+                        }
+                    }
+                );
+            });
+
+            // 3. Scale-in for Service Cards
+            gsap.from(".service-card", {
+                scale: 0.9,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: "#services-section",
+                    start: "top 70%"
+                }
+            });
+
+            // 4. Parallax Background Blobs
+            gsap.utils.toArray('.parallax-blob').forEach(blob => {
+                gsap.to(blob, {
+                    yPercent: 50,
+                    rotation: 45,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blob.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            });
+            
+            ScrollTrigger.refresh();
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initAnimations, 100);
+        });
+
+        // View Router
+        window.showView = (viewId) => {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+
+            const activeView = document.getElementById(viewId);
+            activeView.classList.add('active');
+            
+            if(viewId === 'home-view') {
+                setTimeout(() => {
+                    ScrollTrigger.refresh();
+                }, 100);
+            }
+            
+            if(lenis) lenis.scrollTo(0, { immediate: true });
+        };
+
+        window.scrollToSection = (id) => {
+            const el = document.getElementById(id);
+            if (el && lenis) {
+                lenis.scrollTo(el, { offset: -80 });
+            }
+        };
+
+        // Advanced Admin Tabs Logic
+        window.switchAdminTab = (tab) => {
+            const reqBtn = document.getElementById('tab-req');
+            const portBtn = document.getElementById('tab-port');
+            const reqView = document.getElementById('admin-reqs-view');
+            const portView = document.getElementById('admin-port-view');
+
+            const activeClass = "flex-1 py-3 text-[10px] uppercase tracking-[0.2em] font-bold text-black bg-wolfAccent rounded-lg transition-all shadow-[0_0_15px_rgba(0,229,255,0.4)]";
+            const inactiveClass = "flex-1 py-3 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-300 bg-transparent rounded-lg hover:text-white transition-all border border-white/5";
+
+            if(tab === 'requests') {
+                reqBtn.className = activeClass;
+                portBtn.className = inactiveClass;
+                reqView.classList.remove('hidden');
+                portView.classList.add('hidden');
+            } else {
+                portBtn.className = activeClass;
+                reqBtn.className = inactiveClass;
+                portView.classList.remove('hidden');
+                reqView.classList.add('hidden');
+            }
+        };
+    </script>
+
+    <!-- FIREBASE LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // YOUR EXACT FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWKoUO9dx7j74fw3TFjZJSVZJqfXR_fYk",
+            authDomain: "wolf-d3f5c.firebaseapp.com",
+            databaseURL: "https://wolf-d3f5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "wolf-d3f5c",
+            storageBucket: "wolf-d3f5c.firebasestorage.app",
+            messagingSenderId: "653425773679",
+            appId: "1:653425773679:web:a3d211685992a1c857119a",
+            measurementId: "G-HT8KNK43RC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        let unsubscribeSubmissions = null; 
+        let unsubscribePortfolio = null;
+
+        // --- FETCH PORTFOLIO ON LOAD (FOR CLIENTS) ---
+        function initPortfolioListener() {
+            const portQ = query(collection(db, "portfolioWorks"));
+            unsubscribePortfolio = onSnapshot(portQ, (snapshot) => {
+                const works = [];
+                snapshot.forEach(doc => works.push({id: doc.id, ...doc.data()}));
+                renderClientPortfolio(works);
+                renderAdminPortfolio(works);
+            }, (error) => {
+                console.error("Portfolio fetch error:", error);
+            });
+        }
+        
+        initPortfolioListener();
+
+        // --- RENDER PORTFOLIO (CLIENT VIEW) ---
+        function renderClientPortfolio(works) {
+            const list = document.getElementById('client-portfolio-list');
+            list.innerHTML = '';
+
+            if(works.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-16 luxury-card rounded-[2rem] border-dashed border-white/20">
+                        <div class="w-10 h-10 border-2 border-wolfAccent border-t-transparent rounded-full animate-spin mx-auto mb-5"></div>
+                        <p class="text-[11px] uppercase tracking-[0.3em] text-zinc-300 font-bold drop-shadow-md">Awaiting Archives...</p>
+                    </div>`;
+                return;
+            }
+
+            works.sort((a,b) => b.timestamp - a.timestamp).forEach((work, i) => {
+                const item = document.createElement('div');
+                item.className = "luxury-card p-8 rounded-[2rem] group relative overflow-hidden transition-all duration-500 shadow-xl";
+                item.innerHTML = `
+                    <div class="absolute -top-[50%] -right-[20%] w-64 h-64 bg-wolfAccent/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-wolfAccent/20 transition-colors duration-1000"></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
+                        <div>
+                            <h3 class="text-2xl font-display font-bold text-white mb-3 uppercase tracking-wide group-hover:text-wolfAccent transition-colors duration-300 drop-shadow-md">${work.name}</h3>
+                            <p class="text-[13px] text-zinc-300 font-light leading-relaxed max-w-lg drop-shadow-sm">${work.desc}</p>
+                        </div>
+                        <a href="${work.link}" target="_blank" class="shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-full border border-white/30 bg-black/50 group-hover:border-wolfAccent group-hover:bg-wolfAccent group-hover:text-black transition-all duration-500 text-white shadow-lg shadow-black backdrop-blur-md">
+                            <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                `;
+                list.appendChild(item);
+
+                if (typeof gsap !== 'undefined') {
+                    gsap.fromTo(item, 
+                        { y: 80, opacity: 0, autoAlpha: 0 },
+                        { y: 0, opacity: 1, autoAlpha: 1, duration: 1.2, delay: i * 0.15, ease: "expo.out",
+                          scrollTrigger: { trigger: item, start: "top 90%" }
+                        }
+                    );
+                }
+            });
+            
+            setTimeout(() => { if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }, 200);
+        }
+
+        // --- CLIENT: SUBMIT FORM ---
+        window.handleClientSubmit = async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Transmitting...";
+            btn.disabled = true;
+
+            const d = new Date();
+            const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+            const newSubmission = {
+                timestamp: Date.now(), 
+                date: dateStr,
+                name: document.getElementById('projectName').value,
+                phone: document.getElementById('phone').value,
+                whatsapp: document.getElementById('whatsapp').value || 'N/A',
+                reqs: document.getElementById('requirements').value
+            };
+
+            try {
+                await addDoc(collection(db, "clientRequests"), newSubmission);
+                
+                const form = document.getElementById('client-form');
+                const successMsg = document.getElementById('success-message');
+                const errorMsg = document.getElementById('form-error');
+                
+                form.reset();
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+
+                if(window.lenis) {
+                   window.lenis.scrollTo('#contact-section', { offset: -100 });
+                }
+
+                setTimeout(() => { successMsg.classList.add('hidden'); }, 6000);
+            } catch (error) {
+                console.error("Error: ", error);
+                document.getElementById('form-error').classList.remove('hidden');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // --- ADMIN: AUTH ---
+        window.handleAdminLogin = (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+
+            if (password === 'Iamadmin') {
+                window.showView('admin-panel-view');
+                fetchAdminRequests();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        };
+
+        window.logoutAdmin = () => {
+            if (unsubscribeSubmissions) unsubscribeSubmissions(); 
+            window.showView('home-view');
+        };
+
+        // --- ADMIN: FETCH REQUESTS ---
+        function fetchAdminRequests() {
+            document.getElementById('loading-state').classList.remove('hidden');
+            document.getElementById('submissions-list').classList.add('hidden');
+            document.getElementById('empty-state').classList.add('hidden');
+
+            const q = query(collection(db, "clientRequests"));
+            unsubscribeSubmissions = onSnapshot(q, (snapshot) => {
+                const subs = [];
+                snapshot.forEach((doc) => {
+                    subs.push({ firebaseId: doc.id, ...doc.data() });
+                });
+                renderAdminRequests(subs);
+            }, (error) => {
+                console.error("Fetch error:", error);
+                document.getElementById('loading-state').innerHTML = `<p class="text-red-400 text-[10px] uppercase drop-shadow-md">Connection Error</p>`;
+            });
+        }
+
+        // --- ADMIN: RENDER REQUESTS ---
+        function renderAdminRequests(submissionsData) {
+            document.getElementById('loading-state').classList.add('hidden');
+            const list = document.getElementById('submissions-list');
+            const emptyState = document.getElementById('empty-state');
+            
+            list.innerHTML = '';
+
+            if (submissionsData.length === 0) {
+                list.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            list.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            const sorted = [...submissionsData].sort((a, b) => b.timestamp - a.timestamp);
+
+            sorted.forEach((sub, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-black/50 backdrop-blur-md p-6 rounded-[2rem] animate-fade-in-up relative overflow-hidden group shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10';
+                card.style.animationDelay = `${index * 100}ms`;
+                card.innerHTML = `
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-wolfAccent to-blue-500 opacity-80"></div>
+                    <div class="flex justify-between items-center mb-4 pl-3">
+                        <h3 class="font-display font-bold text-white text-lg uppercase tracking-wide truncate pr-2 drop-shadow-md">${sub.name}</h3>
+                        <span class="text-[9px] text-zinc-300 border border-white/20 bg-black/60 px-2.5 py-1.5 rounded-md uppercase font-bold tracking-widest drop-shadow-md">${sub.date}</span>
+                    </div>
+                    
+                    <div class="flex gap-3 mb-4 pl-3">
+                        <div class="flex-1 bg-black/70 p-3 rounded-xl border border-white/10 shadow-inner">
+                            <p class="text-[8px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">Comms</p>
+                            <p class="text-xs text-white font-medium truncate tracking-wider drop-shadow-sm">${sub.phone}</p>
+                        </div>
+                        <div class="flex-1 bg-black/70 p-3 rounded-xl border border-white/10 shadow-inner">
+                            <p class="text-[8px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">WhatsApp</p>
+                            <p class="text-xs text-green-400 font-medium truncate tracking-wider drop-shadow-sm">${sub.whatsapp}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-black/80 p-4 rounded-xl text-[11px] text-zinc-300 mb-5 max-h-24 overflow-y-auto custom-scrollbar ml-3 border border-white/10 font-light leading-relaxed shadow-inner">
+                        ${sub.reqs}
+                    </div>
+                    
+                    <button onclick="deleteSubmission('${sub.firebaseId}')" class="w-full text-red-400 bg-black/60 hover:bg-red-500/30 border border-red-500/40 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all ml-1 shadow-lg backdrop-blur-md">
+                        Purge Record
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        window.deleteSubmission = async (firebaseId) => {
+            if(confirm("Confirm purge of this client record?")) {
+                await deleteDoc(doc(db, "clientRequests", firebaseId));
+            }
+        };
+
+        // --- ADMIN: ADD PORTFOLIO WORK ---
+        window.handleWorkSubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('add-work-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Publishing...";
+            btn.disabled = true;
+
+            const newWork = {
+                timestamp: Date.now(),
+                name: document.getElementById('workName').value,
+                link: document.getElementById('workLink').value,
+                desc: document.getElementById('workDesc').value
+            };
+
+            try {
+                await addDoc(collection(db, "portfolioWorks"), newWork);
+                e.target.reset();
+            } catch (error) {
+                console.error("Error adding work:", error);
+                alert("Failed to add work.");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // --- ADMIN: RENDER PORTFOLIO LIST ---
+        function renderAdminPortfolio(works) {
+            const list = document.getElementById('admin-portfolio-list');
+            if(!list) return; 
+            
+            list.innerHTML = '';
+            
+            if(works.length === 0) {
+                list.innerHTML = `<p class="text-[10px] text-zinc-400 uppercase tracking-widest text-center py-5 drop-shadow-md">No active portfolio works.</p>`;
+                return;
+            }
+
+            works.sort((a,b) => b.timestamp - a.timestamp).forEach(work => {
+                const div = document.createElement('div');
+                div.className = "bg-black/60 border border-white/10 p-4 rounded-2xl flex justify-between items-center group transition-colors hover:border-wolfAccent/50 backdrop-blur-sm shadow-md";
+                div.innerHTML = `
+                    <div class="truncate pr-4">
+                        <p class="text-[13px] text-white font-bold truncate tracking-wide uppercase mb-1 drop-shadow-sm">${work.name}</p>
+                        <p class="text-[10px] text-zinc-400 truncate">${work.link}</p>
+                    </div>
+                    <button onclick="deleteWork('${work.id}')" class="shrink-0 w-10 h-10 rounded-xl bg-black/90 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white border border-red-500/40 transition-all shadow-lg backdrop-blur-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        window.deleteWork = async (firebaseId) => {
+            if(confirm("Remove this project from the live portfolio?")) {
+                await deleteDoc(doc(db, "portfolioWorks", firebaseId));
+            }
+        };
+    </script>
+</body>
+</html>
