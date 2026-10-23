@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wolf-developer.vercel.app/sitemap.xml
+Sitemap: https://wolfdeveloper.online/sitemap.xml
